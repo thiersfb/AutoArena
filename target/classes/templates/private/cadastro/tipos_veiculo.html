@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="AutoArena Application">
+    <meta name="keywords" content="AutoArena, springboot, html, thymeleaf">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title th:text="${pageTitle}"></title>
+
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <meta name="_csrf_parameter" th:content="${_csrf.parameterName}"/>
+
+    <div th:replace="~{fragments/privateCSS :: privateCss}"></div>
+
+</head>
+
+<body>
+
+<div id="wrapper">
+
+    <div th:replace="~{fragments/privateHeader :: headerFragment}"></div>
+
+    <div th:replace="~{fragments/privateLeftMenu :: leftMenuFragment}"></div>
+
+    <div class="main">
+        <div class="main-content">
+            <div class="container-fluid">
+                <h3 class="page-title"><p th:text="${pageTitle}"></p></h3>
+
+                <div class="panel panel-headline demo-icons">
+                    <!--
+                    <div class="panel-heading">
+                        <h4 class="panel-title" id="formTitle">Cadastrar Novo Tipo de Veículo</h4>
+                    </div>
+                    -->
+                    <div class="panel-body">
+
+                        <form th:action="@{/private/cadastro/tipos_veiculo/registro}" method="post" id="tipoVeiculoForm">
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                            <input type="hidden" id="id" name="id" th:value="${oldId}">
+
+                            <div class="form-group col-md-6">
+                                <label for="nome">Nome</label>
+                                <input type="text" class="form-control" id="nome" name="nome" th:value="${oldNome}" placeholder="Ex: Carro, Moto, Caminhão" required>
+                            </div>
+
+                            <div class="form-group col-md-4">
+                                <label>Status</label><br>
+                                <label class="radio-inline">
+                                    <input type="radio" name="enabled" id="enabledTrue" value="true" th:checked="${oldEnabled == null || oldEnabled == true}"> Ativo
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="enabled" id="enabledFalse" value="false" th:checked="${oldEnabled == false}"> Inativo
+                                </label>
+                            </div>
+
+                            <div class="form-group col-md-12">
+                                <button type="submit" id="submitButton" class="btn btn-default">Salvar</button>
+                                <button type="button" id="cancelButton" class="btn btn-default" style="display:none;">Cancelar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                        <!--
+                        <div th:if="${message}" th:classappend="${messageType == 'success' ? 'alert-success' : 'alert-danger'}" class="alert mt-3" role="alert">
+                            <span th:text="${message}"></span>
+                        </div>
+                        -->
+
+                        <!--<div class="mt-4">-->
+
+                        <div class="panel panel-headline demo-icons">
+                            <!--
+                            <div class="panel-heading">
+                                <h4 class="panel-title" th:text="${blockTitle}"></h4>
+                                <p class="panel-subtitle" th:text="${blockSubtitle}"></p>
+                            </div>
+                            -->
+                                <!--<div class="panel">-->
+                                    <div class="panel-body">
+
+
+                                        <h4 class="panel-title" th:text="Filtros"></h4>
+
+                                        <hr>
+                                        <form method="get" th:action="@{/private/cadastro/tipos_veiculo}">
+                                            <div class="row">
+                                                <div class="form-group col-md-6">
+                                                    <label for="filtroNome">Nome</label>
+                                                    <input type="text" id="filtroNome" name="nome" class="form-control" th:value="${filtroNome}" placeholder="Nome do Tipo de Veículo">
+                                                </div>
+                                                <div class="form-group col-md-2">
+                                                    <label for="filtroStatus">Status</label>
+                                                    <select id="filtroStatus" name="enabled" class="form-control">
+                                                        <option value="">Todos</option>
+                                                        <option value="true" th:selected="${filtroStatus != null and filtroStatus == true}">Ativo</option>
+                                                        <option value="false" th:selected="${filtroStatus != null and filtroStatus == false}">Inativo</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group col-md-2">
+                                                    <label for="filtroOrdenacao">Ordenar por</label>
+                                                    <select id="filtroOrdenacao" name="sort" class="form-control">
+                                                        <option value="nome,asc" th:selected="${sort != null and sort == 'nome,asc'}">Nome (A-Z)</option>
+                                                        <option value="nome,desc" th:selected="${sort != null and sort == 'nome,desc'}">Nome (Z-A)</option>
+                                                        <option value="id,asc" th:selected="${sort != null and sort == 'id,asc'}">ID (Crescente)</option>
+                                                        <option value="id,desc" th:selected="${sort != null and sort == 'id,desc'}">ID (Decrescente)</option>
+                                                        <!--<option value="enabled,desc" th:selected="${sort != null and sort == 'enabled,desc'}">Status (Ativo primeiro)</option>-->
+
+                                                    </select>
+                                                </div>
+                                                <div class="form-group col-md-2">
+                                                    <label for="filtroTamanho">Exibir Itens por página</label>
+                                                    <select id="filtroTamanho" name="size" class="form-control">
+                                                        <option value="5" th:selected="${size == 5}">5</option>
+                                                        <option value="10" th:selected="${size == 10}">10</option>
+                                                        <option value="15" th:selected="${size == 15}">15</option>
+                                                        <option value="20" th:selected="${size == 20}">20</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <button type="submit" class="btn btn-default">Filtrar e Ordenar</button>
+                                                <a th:href="@{/private/cadastro/tipos_veiculo}" class="btn btn-default">Limpar Filtros</a>
+                                            </div>
+                                        </form>
+
+                                        <hr>
+
+                                        <div class="table-responsive">
+                                            <table class="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>ID</th>
+                                                        <th>Nome</th>
+                                                        <th>Status</th>
+                                                        <th>Ações</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr th:each="tipoVeiculo : ${tiposVeiculo}">
+                                                        <td th:text="${tipoVeiculo.id}"></td>
+                                                        <td th:text="${tipoVeiculo.nome}"></td>
+                                                        <td>
+                                                            <span th:if="${tipoVeiculo.enabled}" class="label label-success">Ativo</span>
+                                                            <span th:unless="${tipoVeiculo.enabled}" class="label label-danger">Inativo</span>
+                                                        </td>
+                                                        <td>
+                                                            <button type="button" class="btn btn-sm btn-info edit-tipo-veiculo-btn"
+                                                                    th:data-id="${tipoVeiculo.id}"
+                                                                    th:data-nome="${tipoVeiculo.nome}"
+                                                                    th:data-enabled="${tipoVeiculo.enabled}">
+                                                                Editar
+                                                            </button>
+                                                            <form th:action="@{/private/cadastro/tipos_veiculo/status}" method="post" style="display:inline;">
+                                                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                                                                <input type="hidden" name="id" th:value="${tipoVeiculo.id}" />
+                                                                <input type="hidden" name="enabled" th:value="${!tipoVeiculo.enabled}" />
+                                                                <button type="submit"
+                                                                        th:classappend="${tipoVeiculo.enabled} ? 'btn-default' : 'btn-success'"
+                                                                        class="btn btn-sm">
+                                                                    <span th:text="${tipoVeiculo.enabled} ? 'Desativar' : 'Ativar'"></span>
+                                                                </button>
+                                                            </form>
+                                                            <form th:action="@{/private/cadastro/tipos_veiculo/excluir}" method="post" style="display:inline;">
+                                                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                                                                <input type="hidden" name="id" th:value="${tipoVeiculo.id}" />
+                                                                <button type="submit" class="btn btn-sm btn-danger">Excluir</button>
+                                                            </form>
+                                                        </td>
+                                                    </tr>
+                                                    <tr th:if="${#lists.isEmpty(tiposVeiculo)}">
+                                                        <td colspan="4" class="text-center">Nenhum tipo de veículo encontrado.</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                            <div th:if="${page.totalPages > 0}" class="text-center">
+                                <ul class="pagination">
+                                    <li th:class="${page.first ? 'disabled' : ''}">
+                                        <a th:href="@{/private/cadastro/tipos_veiculo(page=${0}, size=${size}, sort=${sort}, nome=${filtroNome})}">&laquo;</a>
+
+                                    </li>
+                                    <li th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}" th:class="${page.number == i ? 'active' : ''}">
+                                        <a th:href="@{/private/cadastro/tipos_veiculo(page=${i}, size=${size}, sort=${sort}, nome=${filtroNome})}" th:text="${i + 1}"></a>
+                                    </li>
+                                    <li th:class="${page.last ? 'disabled' : ''}">
+                                        <a th:href="@{/private/cadastro/tipos_veiculo(page=${page.totalPages - 1}, size=${size}, sort=${sort}, nome=${filtroNome})}">&raquo;</a>
+                                    </li>
+                                </ul>
+                            </div>
+    <!--                            </div>-->
+                        </div>
+
+                    </div>
+<!--                </div>-->
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/privateFooter :: footerFragment}"></div>
+</div>
+
+<div th:replace="~{fragments/privateScriptsJS :: privateScriptsJs}"></div>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var messageType = /*[[${messageType}]]*/ null;
+    var message = /*[[${message}]]*/ null;
+
+    if (message && messageType) {
+        $(document).ready(function() {
+            if (typeof toastr !== 'undefined') {
+                if (messageType === 'success') {
+                    toastr.success(message);
+                } else if (messageType === 'error') {
+                    toastr.error(message);
+                }
+            } else {
+                console.log(messageType + ": " + message);
+            }
+        });
+    }
+
+    // NOVO SCRIPT PARA FUNCIONALIDADE DE EDIÇÃO
+    $(document).ready(function() {
+        var $formTitle = $('#formTitle');
+        var $tipoVeiculoForm = $('#tipoVeiculoForm');
+        var $idInput = $('#id');
+        var $nomeInput = $('#nome');
+        var $enabledTrueRadio = $('#enabledTrue');
+        var $enabledFalseRadio = $('#enabledFalse');
+        var $submitButton = $('#submitButton');
+        var $cancelButton = $('#cancelButton');
+
+        // Função para resetar o formulário para o modo de cadastro
+        function resetForm() {
+            $formTitle.text('Cadastrar Novo Tipo de Veículo');
+            $idInput.val('');
+            $nomeInput.val('');
+            $enabledTrueRadio.prop('checked', true); // Define Ativo como padrão
+            $enabledFalseRadio.prop('checked', false);
+            //$submitButton.text('Cadastrar Tipo de Veículo').removeClass('btn-warning').addClass('btn-primary');
+            $cancelButton.hide();
+        }
+
+        // Preenche o formulário para edição
+        $('.edit-tipo-veiculo-btn').on('click', function() {
+            var id = $(this).data('id');
+            var nome = $(this).data('nome');
+            var enabled = $(this).data('enabled'); // Isso já é um boolean
+
+            $formTitle.text('Editar Tipo de Veículo (ID: ' + id + ')');
+            $idInput.val(id);
+            $nomeInput.val(nome);
+
+            if (enabled) {
+                $enabledTrueRadio.prop('checked', true);
+            } else {
+                $enabledFalseRadio.prop('checked', true);
+            }
+
+            //$submitButton.text('Atualizar Tipo de Veículo').removeClass('btn-primary').addClass('btn-warning');
+            $cancelButton.show();
+            // Scrolla para o topo para mostrar o formulário
+            $('html, body').animate({
+                scrollTop: $tipoVeiculoForm.offset().top - 100 // Ajuste o valor se necessário
+            }, 500);
+        });
+
+        // Lidar com o botão Cancelar Edição
+        $cancelButton.on('click', function() {
+            resetForm();
+        });
+
+        // Se houver um 'oldId' (caso de erro na edição), manter o formulário no modo de edição
+        if ($idInput.val()) {
+             // Não é necessário preencher, os valores já vêm via oldNome, oldEnabled
+             // Apenas ajustar o título e botões
+            $formTitle.text('Editar Tipo de Veículo (ID: ' + $idInput.val() + ')');
+            //$submitButton.text('Atualizar Tipo de Veículo').removeClass('btn-primary').addClass('btn-warning');
+            $cancelButton.show();
+        }
+
+    });
+    /*]]>*/
+</script>
+
+</body>
+</html>

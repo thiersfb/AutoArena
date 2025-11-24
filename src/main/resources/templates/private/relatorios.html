@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="AutoArena Application">
+    <meta name="keywords" content="AutoArena, springboot, html, thymeleaf">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Relatórios</title>
+
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <meta name="_csrf_parameter" th:content="${_csrf.parameterName}"/>
+
+    <div th:replace="~{fragments/privateCSS :: privateCss}"></div>
+
+</head>
+
+<body>
+
+<div id="wrapper">
+    <div th:replace="~{fragments/privateHeader :: headerFragment}"></div>
+    <div th:replace="~{fragments/privateLeftMenu :: leftMenuFragment}"></div>
+
+    <div class="main">
+        <div class="main-content">
+            <div class="container-fluid">
+                <h3 class="page-title">Relatórios</h3>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="panel">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Veículos À Venda por Montadora</h3>
+                            </div>
+                            <div class="panel-body">
+                                <div class="report-container">
+                                    <canvas id="veiculosPorMontadoraChart"></canvas>
+                                </div>
+                                <div class="text-center" style="margin-top: 20px;">
+                                    <a th:href="@{/private/relatorios/veiculos-por-montadora/exportar-excel}" class="btn btn-success">
+                                        <i class="fa fa-file-excel-o"></i> Exportar para Excel
+                                    </a>
+                                    <a th:href="@{/private/relatorios/veiculos-por-montadora/exportar-pdf}" class="btn btn-danger">
+                                        <i class="fa fa-file-pdf-o"></i> Exportar para PDF
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/privateFooter :: footerFragment}"></div>
+</div>
+
+<div th:replace="~{fragments/privateScriptsJS :: privateScriptsJs}"></div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script th:src="@{/js/private/relatorios-script.js}"></script>
+
+</body>
+</html>

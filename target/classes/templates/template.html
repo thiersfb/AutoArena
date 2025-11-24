@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="HVAC Template">
+    <meta name="keywords" content="HVAC, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>HVAC | Template</title>
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!--    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">-->
+
+    <link rel="stylesheet" th:href="@{/css/app_public/bootstrap.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/app_public/font-awesome.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/app_public/elegant-icons.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/app_public/nice-select.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/app_public/magnific-popup.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/app_public/jquery-ui.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/app_public/owl.carousel.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/app_public/slicknav.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/app_public/style.css}" type="text/css">
+
+</head>
+
+<body>
+
+
+<!-- Page Preloder -->
+<div id="preloder">
+    <div class="loader"></div>
+</div>
+
+
+<!--<div th:replace="header :: headerFragment"></div>-->
+<div th:replace="~{fragments/publicHeader :: headerFragment}"></div>
+
+
+
+<!--<div th:replace="footer :: footerFragment"></div>-->
+<div th:replace="~{fragments/publicFooter :: footerFragment}"></div>
+
+<!-- Search Begin -->
+<div class="search-model">
+    <div class="h-100 d-flex align-items-center justify-content-center">
+        <div class="search-close-switch">+</div>
+        <form class="search-model-form">
+            <input type="text" id="search-input" placeholder="Search here.....">
+        </form>
+    </div>
+</div>
+<!-- Search End -->
+
+
+<script th:src="@{/js/app_public/jquery-3.3.1.min.js}"></script>
+<script th:src="@{/js/app_public/bootstrap.min.js}"></script>
+<script th:src="@{/js/app_public/jquery.nice-select.min.js}"></script>
+<script th:src="@{/js/app_public/jquery-ui.min.js}"></script>
+<script th:src="@{/js/app_public/jquery.magnific-popup.min.js}"></script>
+<script th:src="@{/js/app_public/mixitup.min.js}"></script>
+<script th:src="@{/js/app_public/jquery.slicknav.js}"></script>
+<script th:src="@{/js/app_public/owl.carousel.min.js}"></script>
+<script th:src="@{/js/app_public/main.js}"></script>
+
+<script>
+    window.onscroll = function() {myFunction()};
+
+    var header = document.getElementById("header__navbar");
+    var sticky = header.offsetTop;
+
+    function myFunction() {
+      if (window.pageYOffset > sticky) {
+        header.classList.add("sticky");
+      } else {
+        header.classList.remove("sticky");
+      }
+    }
+</script>
+
+
+
+</body>
+
+</html>

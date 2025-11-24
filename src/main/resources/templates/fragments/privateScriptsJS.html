@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="privateScriptsJs">
+
+
+    <!-- Javascript -->
+    <!--<script src="assets/vendor/jquery/jquery.min.js"></script>-->
+    <script th:src="@{/vendor/private/jquery/jquery.min.js}"></script>
+    <script th:src="@{/vendor/private/bootstrap/js/bootstrap.min.js}"></script>
+    <script th:src="@{/vendor/private/jquery-slimscroll/jquery.slimscroll.min.js}"></script>
+    <script th:src="@{/vendor/private/toastr/toastr.min.js}"></script>
+    <script th:src="@{/scripts/private/klorofil-common.js}"></script>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        // Pega as mensagens dos flash attributes
+        var messageType = /*[[${messageType}]]*/ null;
+        var message = /*[[${message}]]*/ null;
+
+        // Configurações opcionais globais para o Toastr (coloque aqui se quiser que se apliquem a todos os toasts)
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": "toast-top-right", // Onde o toast aparece
+            "preventDuplicates": true,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000", // Duração que o toast fica visível
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        };
+
+        // Verifica se há uma mensagem e exibe o Toastr
+        if (message && messageType) {
+            $(document).ready(function() {
+                if (messageType === 'success') {
+                    toastr.success(message);
+                } else if (messageType === 'error') {
+                    toastr.error(message);
+                } else {
+                    // Para outros tipos de mensagem, se desejar
+                    toastr.info(message);
+                }
+            });
+        }
+        /*]]>*/
+    </script>
+
+</div>
+</body>
+</html>

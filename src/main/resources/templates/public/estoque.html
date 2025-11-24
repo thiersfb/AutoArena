@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="HVAC Template">
+    <meta name="keywords" content="HVAC, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>AutoArena | Estoque</title>
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!--    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">-->
+
+    <link rel="stylesheet" th:href="@{/css/app_public/bootstrap.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/app_public/font-awesome.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/app_public/elegant-icons.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/app_public/nice-select.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/app_public/magnific-popup.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/app_public/jquery-ui.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/app_public/owl.carousel.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/app_public/slicknav.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/app_public/style.css}" type="text/css">
+
+</head>
+
+<body>
+
+
+<!-- Page Preloder -->
+<div id="preloder">
+    <div class="loader"></div>
+</div>
+
+
+<!--<div th:replace="header :: headerFragment"></div>-->
+<div th:replace="~{fragments/publicHeader :: headerFragment}"></div>
+
+
+<!-- Breadcrumb End -->
+<div class="breadcrumb-option set-bg" data-setbg="img/breadcrumb-bg.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    <!--<h2>Car Listing</h2>-->
+                    <h2>Estoque</h2>
+                    <div class="breadcrumb__links">
+                        <!--<a href="../index.html"><i class="fa fa-home"></i> Home</a>-->
+                        <a th:href="@{/}"><i class="fa fa-home"></i> Home</a>
+                        <span>Estoque</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb Begin -->
+
+<!-- Car Section Begin -->
+<section class="car spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="car__sidebar">
+                    <!--
+                    <div class="car__search">
+                        <h5>Car Search</h5>
+                        <form action="#">
+                            <input type="text" placeholder="Search...">
+                            <button type="submit"><i class="fa fa-search"></i></button>
+                        </form>
+                    </div>
+                    -->
+                    <!--
+                    <div class="car__filter">
+                        <h5>Car Filter</h5>
+                        <form action="#">
+                            <select>
+                                <option data-display="Brand">Select Brand</option>
+                                <option value="">Acura</option>
+                                <option value="">Audi</option>
+                                <option value="">Bentley</option>
+                                <<option value="">BMW</option>
+                                <option value="">Bugatti</option>
+                            </select>
+                            <select>
+                                <option data-display="Model">Select Model</option>
+                                <option value="">Q3</option>
+                                <option value="">A4 </option>
+                                <option value="">AVENTADOR</option>
+                            </select>
+                            <select>
+                                <option value="">Body Style</option>
+                                <option value="">Option 1</option>
+                                <option value="">Option 2</option>
+                            </select>
+                            <select>
+                                <option value="">Condition</option>
+                                <option value="">First Hand</option>
+                                <option value="">Second Hand</option>
+                            </select>
+                            <select>
+                                <option value="">Transmisson</option>
+                                <option value="">Bluetooth</option>
+                                <option value="">WiFi</option>
+                            </select>
+                            <select>
+                                <option value="">Mileage</option>
+                                <option value="">27</option>
+                                <option value="">20</option>
+                                <option value="">15</option>
+                                <option value="">10</option>
+                            </select>
+                            <select>
+                                <option value="">Engine</option>
+                                <option value="">BS3</option>
+                                <option value="">BS4</option>
+                                <option value="">BS5</option>
+                                <option value="">BS6</option>
+                            </select>
+                            <select>
+                                <option value="">Colors</option>
+                                <option value="">Red</option>
+                                <option value="">Blue</option>
+                                <option value="">Black</option>
+                                <option value="">Yellow</option>
+                            </select>
+                            <div class="filter-price">
+                                <p>Price:</p>
+                                <div class="price-range-wrap">
+                                    <div class="filter-price-range"></div>
+                                    <div class="range-slider">
+                                        <div class="price-input">
+                                            <input type="text" id="filterAmount">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="car__filter__btn">
+                                <button type="submit" class="site-btn">Reset FIlter</button>
+                            </div>
+                        </form>
+                    </div>
+                    -->
+                    <!--
+                    <div class="car__filter">
+                        <h5>Filtros</h5>
+                        <form action="#">
+                            <select>
+                                <option data-display="Brand">Select Brand</option>
+                                <option value="">Acura</option>
+                                <option value="">Audi</option>
+                                <option value="">Bentley</option>
+                                <<option value="">BMW</option>
+                                <option value="">Bugatti</option>
+                            </select>
+                            <select>
+                                <option data-display="Model">Select Model</option>
+                                <option value="">Q3</option>
+                                <option value="">A4 </option>
+                                <option value="">AVENTADOR</option>
+                            </select>
+                            <select>
+                                <option value="">Colors</option>
+                                <option value="">Red</option>
+                                <option value="">Blue</option>
+                                <option value="">Black</option>
+                                <option value="">Yellow</option>
+                            </select>
+                            <div class="car__filter__btn">
+                                <button type="submit" class="site-btn">Filtrar</button>
+                            </div>
+                        </form>
+                    </div>
+                     -->
+
+                    <!-- -->
+                    <div class="car__filter">
+                        <h5>Filtros</h5>
+                        <form action="/estoque" id="filter-form" method="GET">
+                            <!--
+                            <select name="brandId" id="montadora-select">
+                                <option value="" data-display="Montadora">Selecionar Montadora</option>
+                                <option th:each="montadora : ${montadorasDisponiveis}"
+                                        th:value="${montadora.id}"
+                                        th:text="${montadora.nome}"
+                                        th:selected="${montadora.id == selectedBrandId}"></option>
+                            </select>
+                            -->
+                            <select name="brandId" id="montadora-select">
+                                <option value="" data-display="Montadora">Selecionar Montadora</option>
+                                <option th:each="montadora : ${montadorasDisponiveis}"
+                                        th:value="${montadora.id}"
+                                        th:text="${montadora.nome}"></option>
+                            </select>
+                            <select name="modelId" id="modelo-select">
+                                <option value="" data-display="Modelo">Selecionar Modelo</option>
+                            </select>
+                            <!--
+                            <select name="color">
+                                <option value="">Cor</option>
+                                <option th:each="cor : ${coresDisponiveis}"
+                                        th:value="${cor}"
+                                        th:text="${cor}"
+                                        th:selected="${cor == selectedColor}"></option>
+                            </select>
+                            -->
+                            <select name="color">
+                                <option value="">Cor</option>
+                                <option th:each="cor : ${coresDisponiveis}"
+                                        th:value="${cor}"
+                                        th:text="${cor}"></option>
+                            </select>
+                            <!--
+                            <div class="car__filter__btn">
+                                <button type="submit" class="site-btn">Filtrar</button>
+                            </div>
+                            -->
+
+
+                            <div class="car__details__sidebar__payment">
+                                <a href="#" id="filter-button" class="primary-btn"><i class="fa fa-search"></i> Filtrar</a>
+                            </div>
+
+                            <div class="car__details__sidebar__payment">
+<!--                                <a href="#" class="primary-btn"><i class="fa fa-search"></i> Buscar</a>-->
+
+                                <a th:href="@{/estoque}" class="primary-btn sidebar-btn"><i class="fa fa-close"></i> Limpar Filtros</a>
+                            </div>
+
+                        </form>
+                    </div>
+                    <!-- -->
+
+                </div>
+            </div>
+
+
+            <!-- -->
+
+            <div class="col-lg-9">
+                <div class="car__filter__option">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6">
+                            <div class="car__filter__option__item">
+                                <h6>Mostrar na Página</h6>
+                                <select id="showOnPageSelect">
+                                    <!--
+                                    <option value="1" th:selected="${currentSize == 1}">1 Veículos</option>
+                                    <option value="2" th:selected="${currentSize == 2}">2 Veículos</option>
+                                    -->
+                                    <option value="9" th:selected="${currentSize == 9}">9 Veículos</option>
+                                    <option value="12" th:selected="${currentSize == 12}">12 Veículos</option>
+                                    <option value="15" th:selected="${currentSize == 15}">15 Veículos</option>
+                                    <!--<option value="20" th:selected="${currentSize == 20}">20 Veículos</option>-->
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6">
+                            <div class="car__filter__option__item car__filter__option__item--right">
+                                <h6>Ordenar por</h6>
+                                <select id="sortBySelect">
+                                    <option value="id" th:selected="${currentSort == 'id'}">Número: Identificação</option>
+                                    <option value="priceDesc" th:selected="${currentSort == 'priceDesc'}">Preço: Maior Primeiro</option>
+                                    <option value="priceAsc" th:selected="${currentSort == 'priceAsc'}">Preço: Menor Primeiro</option>
+                                    <option value="yearDesc" th:selected="${currentSort == 'yearDesc'}">Ano: Mais Novo Primeiro</option>
+                                    <option value="yearAsc" th:selected="${currentSort == 'yearAsc'}">Ano: Mais Antigo Primeiro</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- -->
+
+
+                <div class="row">
+                    <div class="col-lg-4 col-md-4" th:each="veiculo : ${veiculosAVenda}">
+                        <div class="car__item">
+                            <div class="car__item__pic set-bg">
+                            <!--<div class="car__item__pic__slider owl-carousel">-->
+                                <a th:href="@{'/detalhes/' + ${veiculo.id}}">
+                                    <th:block th:if="${veiculo.fotos != null and not veiculo.fotos.empty}">
+                                        <th:block th:each="foto : ${veiculo.fotos}">
+                                            <img th:if="${foto.fotoPrincipal}"
+                                                 th:src="@{'/detalhes/foto/' + ${foto.id}}"
+                                                 alt="Foto principal do veículo" />
+                                        </th:block>
+                                    </th:block>
+                                    <img th:unless="${veiculo.fotos != null and not veiculo.fotos.empty}"
+                                         th:src="@{/img/no-photo-available.png}"
+                                         alt="Veículo sem foto" />
+                                </a>
+                            </div>
+                            <div class="car__item__text">
+                                <div class="car__item__text__inner">
+
+
+                                    <div class="label-date">
+                                        <!--<span th:text="${veiculo.anoFabricacao}"></span>-->
+                                        <span th:text="'ID ' + ${veiculo.id}"></span>
+                                    </div>
+                                    <div class="label-date">
+                                        <!--<span th:text="${veiculo.anoFabricacao}"></span>-->
+                                        <span th:text="${veiculo.cor}"></span>
+                                    </div>
+
+                                    <h5><a th:href="@{'/detalhes/' + ${veiculo.id}}"><span th:text="${veiculo.montadora.nome + ' ' + veiculo.modelo.nome}"></span></a></h5>
+
+                                    <ul>
+                                        <li><i class="fa fa-tachometer"></i> <span th:text="${veiculo.quilometragem}"></span></li>
+                                        <li><i class="fa fa-calendar-o"></i> <span th:text="${veiculo.anoFabricacao}"></span></li>
+                                    </ul>
+                                </div>
+
+
+                                <div class="car__item__price">
+                                    <!--<span class="car-option sale">À Venda</span>-->
+                                    <a th:href="@{'/detalhes/' + ${veiculo.id}}">
+                                        <span class="car-option sale"><i class="fa fa-eye"></i> Ver</span>
+                                    </a>
+                                    <h6><span th:text="'$ ' + ${#numbers.formatDecimal(veiculo.precoAnunciado, 0, 'POINT', 2, 'COMMA')}"></span></h6>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Páginação -->
+                <div class="pagination__option" th:if="${veiculosPage.totalPages > 1}">
+                    <a th:each="i : ${#numbers.sequence(0, veiculosPage.totalPages - 1)}"
+                       th:href="@{/estoque(page=${i}, size=${currentSize}, sort=${currentSort})}"
+                       th:text="${i + 1}"
+                       th:classappend="${i == veiculosPage.number} ? 'active' : ''">1</a>
+
+                    <!--
+                    <a th:if="${veiculosPage.hasNext()}"
+                       th:href="@{/estoque(page=${veiculosPage.number + 1}, size=${currentSize}, sort=${currentSort})}">
+                        <span class="arrow_carrot-2right"></span>
+                    </a>
+                    -->
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+</section>
+<!-- Car Section End -->
+
+<!--<div th:replace="footer :: footerFragment"></div>-->
+<div th:replace="~{fragments/publicFooter :: footerFragment}"></div>
+
+<!-- Search Begin -->
+<!--
+<div class="search-model">
+    <div class="h-100 d-flex align-items-center justify-content-center">
+        <div class="search-close-switch">+</div>
+        <form class="search-model-form">
+            <input type="text" id="search-input" placeholder="Search here.....">
+        </form>
+    </div>
+</div>
+-->
+<!-- Search End -->
+
+
+<script th:src="@{/js/app_public/jquery-3.3.1.min.js}"></script>
+<script th:src="@{/js/app_public/bootstrap.min.js}"></script>
+<script th:src="@{/js/app_public/jquery.nice-select.min.js}"></script>
+<script th:src="@{/js/app_public/jquery-ui.min.js}"></script>
+<script th:src="@{/js/app_public/jquery.magnific-popup.min.js}"></script>
+<script th:src="@{/js/app_public/mixitup.min.js}"></script>
+<script th:src="@{/js/app_public/jquery.slicknav.js}"></script>
+<script th:src="@{/js/app_public/owl.carousel.min.js}"></script>
+<script th:src="@{/js/app_public/main.js}"></script>
+<script>
+    // Lógica para o menu superior de navegação permanecer fixo no top da página
+    window.onscroll = function() {myFunction()};
+
+    var header = document.getElementById("header__navbar");
+    var sticky = header.offsetTop;
+
+    function myFunction() {
+      if (window.pageYOffset > sticky) {
+        header.classList.add("sticky");
+      } else {
+        header.classList.remove("sticky");
+      }
+    }
+
+    $(document).ready(function() {
+
+        // Lógica para o botão de filtrar
+        $('#filter-button').on('click', function(e) {
+            e.preventDefault(); // Impede que o link siga o href="#"
+            $('#filter-form').submit(); // Submete o formulário
+        });
+
+        // Lógica para filtrar e ordenar veículos
+        function updateCarList() {
+            var showOnPage = $('#showOnPageSelect').val();
+            var sortBy = $('#sortBySelect').val();
+
+            // Constrói a URL com os novos parâmetros
+            var newUrl = window.location.pathname + '?size=' + showOnPage + '&sort=' + sortBy;
+
+            // Redireciona para a nova URL
+            window.location.href = newUrl;
+        }
+
+        // Escuta por mudanças nos dropdowns de ordenação e quantidade
+        $('#showOnPageSelect, #sortBySelect').on('change', function() {
+            updateCarList();
+        });
+
+
+        // Lógica para o filtro de modelos com base na marca
+        $('#montadora-select').on('change', function() {
+            var montadoraId = $(this).val();
+            var modeloSelect = $('#modelo-select');
+
+            // Limpa o select de modelos e adiciona a opção padrão
+            modeloSelect.empty().append('<option value="">Selecionar Modelo</option>');
+
+            if (montadoraId) {
+                $.ajax({
+                    url: '/api/modelos/por-montadora/' + montadoraId,
+                    type: 'GET',
+                    success: function(modelos) {
+                        if (modelos.length > 0) {
+                            $.each(modelos, function(index, modelo) {
+                                modeloSelect.append('<option value="' + modelo.id + '">' + modelo.nome + '</option>');
+                            });
+                        }
+                        // Esta linha é a correção principal: atualiza o nice-select
+                        modeloSelect.niceSelect('update');
+                    },
+                    error: function(error) {
+                        console.error('Erro ao buscar modelos:', error);
+                    }
+                });
+            } else {
+                // Se nenhuma marca for selecionada, atualiza o nice-select para mostrar o valor padrão
+                modeloSelect.niceSelect('update');
+            }
+        });
+
+    });
+
+</script>
+
+</body>
+
+</html>

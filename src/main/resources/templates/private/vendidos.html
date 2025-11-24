@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="HVAC Template">
+    <meta name="keywords" content="HVAC, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>HVAC | Dashboard</title>
+
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <meta name="_csrf_parameter" th:content="${_csrf.parameterName}"/>
+
+    <div th:replace="~{fragments/privateCSS :: privateCss}"></div>
+
+</head>
+
+<body>
+
+
+<!-- WRAPPER -->
+<div id="wrapper">
+
+    <div th:replace="~{fragments/privateHeader :: headerFragment}"></div>
+
+    <div th:replace="~{fragments/privateLeftMenu :: leftMenuFragment}"></div>
+
+
+    <!-- MAIN -->
+    <div class="main">
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+            <div class="container-fluid">
+                <!--<h3 class="page-title">Page Header | Title</h3>-->
+                <h3 class="page-title"><p th:text="${pageTitle}"></p></h3>
+
+                <!--
+                <div class="panel panel-headline demo-icons">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><p th:text="${blockTitle}"></p></h3>
+                        <p class="subtitle"><p th:text="${blockSubtitle}"></p></a></p>
+                    </div>
+                </div>
+                -->
+
+                <div class="panel panel-headline">
+                    <!--
+                    <div class="panel-heading">
+                        <h4 class="panel-title" th:text="${blockTitle}"></h4>
+                        <p class="subtitle" th:text="${blockSubtitle}"></p>
+                    </div>
+                    -->
+                    <div class="panel">
+
+                        <div class="panel-body">
+
+
+                            <h4 class="panel-title" th:text="Filtros"></h4>
+                            <hr>
+
+                            <form method="get" th:action="@{/private/vendidos}">
+                                <div class="row">
+                                    <div class="form-group col-md-2">
+                                        <label for="filtroId">ID do Veículo</label>
+                                        <input type="number" id="filtroId" name="id" class="form-control" th:value="${filtroId}" placeholder="ID do Veículo">
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label for="filtroTipoVeiculoId">Tipo de Veículo</label>
+                                        <select id="filtroTipoVeiculoId" name="tipoVeiculoId" class="form-control">
+                                            <option value="">Todos</option>
+                                            <option th:each="tipo : ${tiposVeiculo}"
+                                                    th:value="${tipo.id}"
+                                                    th:text="${tipo.nome}"
+                                                    th:selected="${filtroTipoVeiculoId != null and filtroTipoVeiculoId == tipo.id}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label for="filtroMontadoraId">Montadora</label>
+                                        <select id="filtroMontadoraId" name="montadoraId" class="form-control">
+                                            <option value="">Todas</option>
+                                            <option th:each="montadora : ${montadoras}"
+                                                    th:value="${montadora.id}"
+                                                    th:text="${montadora.nome}"
+                                                    th:selected="${filtroMontadoraId != null and filtroMontadoraId == montadora.id}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label for="filtroModeloId">Modelo</label>
+                                        <select id="filtroModeloId" name="modeloId" class="form-control">
+                                            <option value="">Todos</option>
+                                            <option th:each="modelo : ${modelosFiltrar}"
+                                                    th:value="${modelo.id}"
+                                                    th:text="${modelo.nome}"
+                                                    th:selected="${filtroModeloId != null and filtroModeloId == modelo.id}">
+                                            </option>
+                                        </select>
+                                    </div>
+
+
+                                    <!--
+                                    <div class="form-group col-md-3">
+                                        <label for="filtroPlaca">Placa</label>
+                                        <input type="text" id="filtroPlaca" name="placa" class="form-control" th:value="${filtroPlaca}" placeholder="Placa do Veículo">
+                                    </div>
+                                    -->
+
+
+                                    <div class="form-group col-md-2">
+                                        <label for="filtroOrdenacao">Ordenar por</label>
+                                        <select id="filtroOrdenacao" name="sort" class="form-control">
+                                            <option value="">Selecione</option>
+
+                                            <option value="id,asc" th:selected="${sort != null and sort == 'id,asc'}">ID (Crescente)</option>
+                                            <option value="id,desc" th:selected="${sort != null and sort == 'id,desc'}">ID (Decrescente)</option>
+                                            <option value="montadora.nome,asc" th:selected="${sort != null and sort == 'montadora.nome,asc'}">Montadora (A-Z)</option>
+                                            <option value="montadora.nome,desc" th:selected="${sort != null and sort == 'montadora.nome,desc'}">Montadora (Z-A)</option>
+                                            <option value="modelo.nome,asc" th:selected="${sort != null and sort == 'modelo.nome,asc'}">Modelo (A-Z)</option>
+                                            <option value="modelo.nome,desc" th:selected="${sort != null and sort == 'modelo.nome,desc'}">Modelo (Z-A)</option>
+                                            <option value="precoAnunciado,asc" th:selected="${sort != null and sort == 'precoAnunciado,asc'}">Preço Anunciado (Crescente)</option>
+                                            <option value="precoAnunciado,desc" th:selected="${sort != null and sort == 'precoAnunciado,desc'}">Preço Anunciado (Decrescente)</option>
+
+                                            <option value="precoVendido,asc" th:selected="${sort != null and sort == 'precoVendido,asc'}">Preço Vendido (Crescente)</option>
+                                            <option value="precoVendido,desc" th:selected="${sort != null and sort == 'precoVendido,desc'}">Preço Vendido (Decrescente)</option>
+
+
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group col-md-2">
+                                        <label for="filtroTamanho">Exibir Itens por página</label>
+                                        <select id="filtroTamanho" name="size" class="form-control">
+                                            <!--<option value="2" th:selected="${size == 2}">2</option>-->
+                                            <option value="5" th:selected="${size == 5}">5</option>
+                                            <option value="10" th:selected="${size == 10}">10</option>
+                                            <option value="15" th:selected="${size == 15}">15</option>
+                                            <option value="20" th:selected="${size == 20}">20</option>
+                                        </select>
+                                    </div>
+
+
+
+                                </div>
+                                <div class="row">
+                                    <!--
+                                    <div class="form-group col-md-3">
+                                        <label for="filtroForSale">Disponível para venda</label>
+                                        <select id="filtroForSale" name="forSale" class="form-control">
+                                            <option value="">Todos</option>
+                                            <option value="true" th:selected="${filtroForSale != null and filtroForSale == true}">Sim</option>
+                                            <option value="false" th:selected="${filtroForSale != null and filtroForSale == false}">Não</option>
+                                        </select>
+                                    </div>
+                                    -->
+
+
+
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-default">Filtrar e Ordenar</button>
+                                    <a th:href="@{/private/vendidos}" class="btn btn-default">Limpar Filtros</a>
+                                </div>
+                                <div class="row">
+
+
+                                </div>
+
+                            </form>
+
+                            <hr>
+
+
+
+
+                            <div class="table-responsive">
+
+                            <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Tipo</th>
+                                <th>Montadora</th>
+                                <th>Modelo</th>
+                                <th>Ano Mod.</th>
+                                <th>Ano Fab.</th>
+                                <th>Cor</th>
+                                <th>KM</th>
+                                <th>Preço Anunciado</th>
+                                <th>Preço Vendido</th>
+                                <th>Data da Venda</th>
+                                <th>Localizado Em</th>
+                                <th>Status</th>
+                                <!--<th sec:authorize="hasAnyRole('ADMIN', 'SELLER')">Cadastrado Por</th>-->
+                                <th sec:authorize="hasAnyRole('ADMIN')">Cadastrado Por</th>
+                                <th>Ações</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="veiculo : ${veiculos}">
+                                <td th:text="${veiculo.id}"></td>
+                                <td th:text="${veiculo.tipoVeiculo.nome}"></td>
+                                <td th:text="${veiculo.montadora.nome}"></td>
+                                <td th:text="${veiculo.modelo.nome}"></td>
+                                <td th:text="${veiculo.anoModelo}"></td>
+                                <td th:text="${veiculo.anoFabricacao}"></td>
+                                <td th:text="${veiculo.cor}"></td>
+                                <td th:text="${veiculo.quilometragem}"></td>
+                                <td th:text="${#numbers.formatCurrency(veiculo.precoAnunciado)}"></td>
+                                <td th:text="${#numbers.formatCurrency(veiculo.precoVendido)}"></td>
+                                <td th:text="${#temporals.format(veiculo.dataVenda, 'dd/MM/yyyy')}"></td>
+
+                                <td th:text="${veiculo.cidade.nome} + '-' + ${veiculo.estado.uf} + ' (' + ${veiculo.pais.nome} +')' "></td>
+                                <td>
+                                    <span th:if="${veiculo.forSale}" class="label label-success">À Venda</span>
+                                    <span th:if="${!veiculo.forSale}" class="label label-danger">Vendido</span>
+                                </td>
+                                <!--<td sec:authorize="hasAnyRole('ADMIN', 'SELLER')" th:text="${veiculo.usuarioCadastro != null ? veiculo.usuarioCadastro.username : 'N/A'}"></td>-->
+                                <td sec:authorize="hasAnyRole('ADMIN', 'SELLER')" th:text="${veiculo.usuarioCadastro != null ? veiculo.usuarioCadastro.nome + ' ' + veiculo.usuarioCadastro.sobrenome + ' (' + veiculo.usuarioCadastro.username + ')' : 'N/A'}"></td>
+
+                                <td>
+                                    <!--<a th:href="@{/private/veiculos/fotos/{veiculoId}(veiculoId=${veiculo.id})}"-->
+                                    <a th:href="@{/private/cadastro/veiculosFotos/{veiculoId}(veiculoId=${veiculo.id})}"
+                                       class="btn btn-primary btn-sm"
+                                       title="Gerenciar Fotos">
+                                        <i class="fa fa-camera"></i> Fotos
+                                    </a>
+
+
+
+                                    <form th:action="@{/private/cadastro/veiculos/alterar-status}" method="post" style="display:inline;">
+
+
+                                        <input type="hidden" name="id" th:value="${veiculo.id}" />
+                                        <input type="hidden" name="forSale" th:value="${!veiculo.forSale}" />
+                                        <button type="submit"
+                                                th:classappend="${veiculo.forSale} ? 'btn-default' : 'btn-success'" class="btn btn-xs"
+                                                th:title="${veiculo.forSale} ? 'Marcar como Vendido' : 'Marcar como À Venda'"
+                                                th:text="${veiculo.forSale} ? 'Vender' : 'Colocar à venda'">
+                                        </button>
+                                    </form>
+
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- END MAIN CONTENT -->
+    </div>
+    <!-- END MAIN -->
+
+
+    <div th:replace="~{fragments/privateFooter :: footerFragment}"></div>
+</div>
+
+<!-- END WRAPPER -->
+
+<div th:replace="~{fragments/privateScriptsJS :: privateScriptsJs}"></div>
+
+
+<script th:inline="javascript">
+/*<![CDATA[*/
+    $(document).ready(function() {
+
+        var $montadoraSelect = $('#montadoraSelect');
+        var $modeloSelect = $('#modeloSelect');
+
+        var $submitButton = $('#submitButton');
+
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+
+
+        // Função para popular o select de modelos via AJAX
+        function populateModeloSelect(montadoraId, currentModeloId = null) {
+            $modeloSelect.empty().append('<option value="">Carregando Modelos...</option>'); // Limpa e mostra mensagem de carregamento
+            if (montadoraId) {
+                $.ajax({
+                    url: '/private/cadastro/modelos/por-montadora/' + montadoraId,
+                    type: 'GET',
+                    beforeSend: function(xhr) {
+                        xhr.setRequestHeader(header, token);
+                    },
+                    success: function(modelos) {
+                        $modeloSelect.empty().append('<option value="">Selecione um Modelo</option>');
+                        $.each(modelos, function(i, modelo) {
+                            $modeloSelect.append($('<option>', {
+                                value: modelo.id,
+                                text: modelo.nome
+                            }));
+                        });
+                        if (currentModeloId) {
+                            $modeloSelect.val(currentModeloId);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Erro ao carregar modelos: " + error);
+                        $modeloSelect.empty().append('<option value="">Erro ao carregar Modelos</option>');
+                        toastr.error("Erro ao carregar modelos para a montadora selecionada.");
+                    }
+                });
+            } else {
+                $modeloSelect.empty().append('<option value="">Selecione uma Montadora Primeiro</option>');
+            }
+        }
+
+
+        // Evento de mudança para o select de Montadoras
+        $montadoraSelect.on('change', function() {
+            var montadoraId = $(this).val();
+            populateModeloSelect(montadoraId);
+        });
+
+
+        // Exibição de mensagens Toastr
+        var messageType = /*[[${messageType}]]*/ null;
+        var message = /*[[${message}]]*/ null;
+
+        if (message && messageType) {
+            if (typeof toastr !== 'undefined') {
+                if (messageType === 'success') {
+                    toastr.success(message);
+                } else if (messageType === 'error') {
+                    toastr.error(message);
+                } else if (messageType === 'warning') {
+                    toastr.warning(message);
+                }
+            } else {
+                console.log(messageType + ": " + message);
+            }
+        }
+
+
+        // Lógica para o filtro de modelos com base na marca
+        var montadoraSelect = $('#filtroMontadoraId');
+        var modeloSelect = $('#filtroModeloId');
+
+        // Pré-selecionar valores do filtro se existirem
+        var initialMontadoraId = [[${filtroMontadoraId}]];
+        var initialModeloId = [[${filtroModeloId}]];
+
+        // Função para carregar os modelos via AJAX
+        function loadModelos(montadoraId, callback) {
+
+            // Limpa o select de modelos e adiciona a opção padrão
+            modeloSelect.empty().append('<option value="">Todos</option>');
+
+                var url;
+                if (montadoraId) {
+                    // Se um ID de montadora for selecionado, busca os modelos daquela montadora
+                    url = '/private/cadastro/modelos/por-montadora/' + montadoraId;
+                } else {
+                    // Se "Todos" for selecionado, busca todos os modelos
+                    url = '/private/cadastro/modelos/por-montadora/todos';
+                }
+
+                $.ajax({
+
+                    url: url,
+                    type: 'GET',
+                    success: function(modelos) {
+
+                        if (modelos.length > 0) {
+
+                            $.each(modelos, function(index, modelo) {
+                                modeloSelect.append('<option value="' + modelo.id + '">' + modelo.nome + '</option>');
+                            });
+                        }
+                        if ($.fn.niceSelect) {
+                            modeloSelect.niceSelect('update');
+                        }
+                        if (callback) callback();
+                    },
+                    error: function(error) {
+                        console.error('Erro ao buscar modelos:', error);
+                        if (callback) callback();
+                    }
+                });
+
+            }
+
+            // Lógica para pré-seleção na inicialização da página
+            if (initialMontadoraId) {
+              montadoraSelect.val(initialMontadoraId);
+              loadModelos(initialMontadoraId, function() {
+                  if (initialModeloId) {
+                      modeloSelect.val(initialModeloId);
+                  }
+              });
+        }
+
+        // Evento de mudança na seleção de montadora
+        montadoraSelect.on('change', function() {
+            var montadoraId = $(this).val();
+            loadModelos(montadoraId);
+        });
+
+        // Chamada inicial para carregar modelos, caso a montadora já esteja pré-selecionada no carregamento da página
+        if (initialMontadoraId) {
+            montadoraSelect.trigger('change');
+        }
+    });
+/*]]>*/
+</script>
+
+</body>
+
+</html>

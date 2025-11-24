@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+
+<div th:fragment="headerFragment">
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="brand" style="max-height: 20px; width: auto;">
+            <!--<a href="index.html"><img src="assets/img/logo-dark.png" alt="Klorofil Logo" class="img-responsive logo"></a>-->
+            <a th:href="@{/private/dashboard}">
+                <img th:src="@{/img/private/logo-dark.png}" alt="AutoArena Logo" style="height: 30px; width: auto;" class="img-responsive logo" >
+            </a>
+        </div>
+        <div class="container-fluid">
+            <div class="navbar-btn">
+                <button type="button" class="btn-toggle-fullwidth"><i class="lnr lnr-arrow-left-circle"></i></button>
+            </div>
+            <!--
+            <form class="navbar-form navbar-left">
+                <div class="input-group">
+                    <input type="text" value="" class="form-control" placeholder="Search dashboard...">
+                    <span class="input-group-btn"><button type="button" class="btn btn-primary">Go</button></span>
+                </div>
+            </form>
+            -->
+            <div id="navbar-menu">
+                <ul class="nav navbar-nav navbar-right">
+                    <!--
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle icon-menu" data-toggle="dropdown">
+                            <i class="lnr lnr-alarm"></i>
+                            <span class="badge bg-danger">5</span>
+                        </a>
+                        <ul class="dropdown-menu notifications">
+                            <li><a href="#" class="notification-item"><span class="dot bg-warning"></span>System space is almost full</a></li>
+                            <li><a href="#" class="notification-item"><span class="dot bg-danger"></span>You have 9 unfinished tasks</a></li>
+                            <li><a href="#" class="notification-item"><span class="dot bg-success"></span>Monthly report is available</a></li>
+                            <li><a href="#" class="notification-item"><span class="dot bg-warning"></span>Weekly meeting in 1 hour</a></li>
+                            <li><a href="#" class="notification-item"><span class="dot bg-success"></span>Your request has been approved</a></li>
+                            <li><a href="#" class="more">See all notifications</a></li>
+                        </ul>
+                    </li>
+                    -->
+                    <!--
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="lnr lnr-question-circle"></i> <span>Help</span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Basic Use</a></li>
+                            <li><a href="#">Working With Data</a></li>
+                            <li><a href="#">Security</a></li>
+                            <li><a href="#">Troubleshooting</a></li>
+                        </ul>
+                    </li>
+                    -->
+                    <li class="dropdown">
+                        <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="assets/img/user.png" class="img-circle" alt="Avatar"> <span>Samuel</span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>-->
+                        <!--
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img th:src="@{/img/private/user.png}" class="img-circle" alt="Avatar">
+                            <span>Bem-vindo <span sec:authentication="name"></span></span>
+                            <i class="icon-submenu lnr lnr-chevron-down"></i>
+                        </a>
+                        -->
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <img th:if="${loggedInUserPhoto}"
+                                 th:src="@{'data:image/jpeg;base64,' + ${loggedInUserPhoto}}"
+                                 class="img-circle"
+                                 alt="Avatar do Usuário"
+                                 style="width: 24px; height: 24px; object-fit: cover;"> <img th:unless="${loggedInUserPhoto}"
+                                                                                             th:src="@{/img/private/user.png}"
+                                                                                             class="img-circle"
+                                                                                             alt="Avatar Padrão">
+
+                            <span>Bem-vindo <span sec:authentication="name"></span></span>
+                            <!--<span>Bem-vindo <span th:text="${loggedInUser.nome + ' ' + loggedInUser.sobrenome}"></span></span>-->
+
+                            <i class="icon-submenu lnr lnr-chevron-down"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a th:href="@{/private/admin/perfil}"><i class="lnr lnr-user"></i> <span>Meu Perfil</span></a></li>
+                            <!--
+                            <li><a href="#"><i class="lnr lnr-envelope"></i> <span>Mensagens</span></a></li>
+                            <li><a href="#"><i class="lnr lnr-cog"></i> <span>Configurações</span></a></li>
+                            -->
+                            <!--<li><a href="#"><i class="lnr lnr-exit"></i> <span>Logout</span></a></li>-->
+                            <li><a th:href="@{/logout.html}"><i class="lnr lnr-exit"></i> <span>Sair</span></a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- END NAVBAR -->
+
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="HVAC Template">
+    <meta name="keywords" content="HVAC, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>HVAC | Sample</title>
+
+
+    <div th:replace="~{fragments/privateCSS :: privateCss}"></div>
+
+</head>
+
+<body>
+
+
+<!-- WRAPPER -->
+<div id="wrapper">
+
+    <div th:replace="~{fragments/privateHeader :: headerFragment}"></div>
+
+    <div th:replace="~{fragments/privateLeftMenu :: leftMenuFragment}"></div>
+
+
+    <!-- MAIN -->
+    <div class="main">
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+            <div class="container-fluid">
+                <!--<h3 class="page-title">Page Header | Title</h3>-->
+                <h3 class="page-title"><p th:text="${pageTitle}"></p></h3>
+
+                <div class="panel panel-headline demo-icons">
+                    <div class="panel-heading">
+                        <!--<h3 class="panel-title">Block | Title</h3>-->
+                        <!--<p class="subtitle">Block | Subtitles</a></p>-->
+                        <h3 class="panel-title"><p th:text="${blockTitle}"></p></h3>
+                        <p class="subtitle"><p th:text="${blockSubtitle}"></p></a></p>
+                    </div>
+                    <div class="panel-body">
+                        <!--<span class="cssclass">Block | Text</span>-->
+                        <span class="cssclass"><p th:text="${blockText}"></p></span>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- END MAIN CONTENT -->
+    </div>
+    <!-- END MAIN -->
+
+
+    <div th:replace="~{fragments/privateFooter :: footerFragment}"></div>
+</div>
+
+<!-- END WRAPPER -->
+
+<div th:replace="~{fragments/privateScriptsJS :: privateScriptsJs}"></div>
+
+</body>
+
+</html>

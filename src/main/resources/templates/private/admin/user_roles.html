@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="AutoArena Application">
+    <meta name="keywords" content="AutoArena, springboot, html, thymeleaf">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title th:text="${pageTitle}"></title>
+
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <meta name="_csrf_parameter" th:content="${_csrf.parameterName}"/>
+
+    <div th:replace="~{fragments/privateCSS :: privateCss}"></div>
+
+</head>
+
+<body>
+
+<div id="wrapper">
+
+    <div th:replace="~{fragments/privateHeader :: headerFragment}"></div>
+
+    <div th:replace="~{fragments/privateLeftMenu :: leftMenuFragment}"></div>
+
+    <div class="main">
+        <div class="main-content">
+            <div class="container-fluid">
+                    <h3 class="page-title"><p th:text="${pageTitle}"></p></h3>
+
+                    <div class="panel panel-headline demo-icons">
+                        <!--
+                        <div class="panel-heading">
+                            <h4 class="panel-title" id="formTitle" th:text="${blockTitle}"></h4>
+                            <p class="panel-subtitle" th:text="${blockSubtitle}"></p>
+                        </div>
+                        -->
+                        <div class="panel-body">
+
+                            <form th:action="@{/private/admin/users/roles/add}" method="post" id="addRoleForm">
+                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+                                <div class="row">
+                                    <div class="form-group col-md-4">
+                                        <label for="userId">Usuário</label>
+                                        <select class="form-control" id="userId" name="userId" required>
+                                            <option value="">-- Selecione um Usuário --</option>
+                                            <option th:each="user : ${users}" th:value="${user.id}" th:text="${user.username + ' (' + (user.nome ?: 'N/A') + ' ' + (user.sobrenome ?: 'N/A') + ')'}"></option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group col-md-4">
+                                        <!--<label for="roleName">Nome da Role (ex: ADMIN, USER, GERENTE):</label>-->
+                                        <label for="roleName">Permissão</label>
+                                        <select class="form-control" id="roleName" name="roleName" required>
+                                            <option value="">-- Selecione uma permissão --</option>
+                                            <option th:each="role : ${availableRoles}" th:value="${role}" th:text="${role}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-md-4">
+                                        <button type="submit" class="btn btn-default">Adicionar</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                        <!--
+                        <div th:if="${message}" th:classappend="${messageType == 'success' ? 'alert-success' : 'alert-danger'}" class="alert mt-3" role="alert">
+                            <span th:text="${message}"></span>
+                        </div>
+                        -->
+
+                        <!--<div class="mt-4">-->
+
+                    <div class="panel panel-headline demo-icons">
+                        <div class="panel-heading">
+                            <h4>Permissões Atuais do Usuário Selecionado</h4>
+                        </div>
+                                <!--<div class="panel">-->
+
+                        <div class="panel-body">
+                            <table class="table table-striped" id="userRolesTable">
+                                <thead>
+                                <tr>
+                                    <th>Permissão</th>
+                                    <th>Ações</th>
+                                </tr>
+                                </thead>
+                                <tbody id="userRolesTableBody">
+                                <tr>
+                                    <td colspan="2" class="text-center">Selecione um usuário para ver suas permissões.</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+    <!--                            </div>-->
+                    </div>
+
+<!--                    </div>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/privateFooter :: footerFragment}"></div>
+</div>
+
+<div th:replace="~{fragments/privateScriptsJS :: privateScriptsJs}"></div>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    // Mensagens de feedback (Toasts)
+    var messageType = /*[[${messageType}]]*/ null;
+    var message = /*[[${message}]]*/ null;
+
+    if (message && messageType) {
+        $(document).ready(function() {
+            if (typeof toastr !== 'undefined') {
+                if (messageType === 'success') {
+                    toastr.success(message);
+                } else if (messageType === 'error') {
+                    toastr.error(message);
+                }
+            } else {
+                console.log(messageType + ": " + message);
+            }
+        });
+    }
+
+    // Define a URL de remoção da role uma vez
+    var removeRoleUrl = /*[[@{/private/admin/users/roles/remove}]]*/;
+
+    // Define as variáveis do CSRF para uso no JavaScript
+    var csrfParameterName = /*[[${_csrf.parameterName}]]*/; // NOVO
+    var csrfToken = /*[[${_csrf.token}]]*/; // NOVO
+
+    // JavaScript para carregar e exibir as roles de um usuário selecionado
+    $(document).ready(function() {
+        // Mapeia os usuários do Thymeleaf para um objeto JavaScript para fácil acesso
+        var allUsers = /*[[${users}]]*/ [];
+        console.log("allUsers carregados:", allUsers);
+        var userMap = {};
+        allUsers.forEach(function(user) {
+            userMap[user.id] = user;
+        });
+
+        $('#userId').change(function() {
+            var userId = $(this).val();
+            var userRolesTableBody = $('#userRolesTableBody');
+            userRolesTableBody.empty(); // Limpa a tabela anterior
+
+            console.log("Usuário selecionado ID:", userId);
+
+            if (userId) {
+                var selectedUser = userMap[userId];
+                if (selectedUser && selectedUser.roles && selectedUser.roles.length > 0) {
+                    selectedUser.roles.forEach(function(role) {
+                        userRolesTableBody.append(
+                            '<tr>' +
+                            '<td>' + role + '</td>' +
+                            '<td>' +
+                            '<form action="' + removeRoleUrl + '" method="post" style="display:inline;">' +
+                            '<input type="hidden" name="userId" value="' + userId + '">' +
+                            '<input type="hidden" name="roleName" value="' + role + '">' +
+                            // Use as novas variáveis CSRF aqui
+                            '<input type="hidden" name="'+ csrfParameterName +'" value="'+ csrfToken +'" />' + // CORRIGIDO AQUI
+                            '<button type="submit" class="btn btn-sm btn-danger">Remover</button>' +
+                            '</form>' +
+                            '</td>' +
+                            '</tr>'
+                        );
+                    });
+                } else {
+                    userRolesTableBody.append('<tr><td colspan="2" class="text-center">Nenhuma permissão atribuída a este usuário.</td></tr>');
+                }
+            } else {
+                userRolesTableBody.append('<tr><td colspan="2" class="text-center">Selecione um usuário para ver suas permissões.</td></tr>');
+            }
+        });
+
+        // Trigger change event on page load if a user is pre-selected (e.g., after redirect with error)
+        if ($('#userId').val()) {
+            $('#userId').trigger('change');
+        }
+    });
+    /*]]>*/
+</script>
+
+</body>
+</html>

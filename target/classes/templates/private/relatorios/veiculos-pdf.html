@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Relatório de Veículos por Montadora</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .footer {
+            text-align: right;
+            margin-top: 30px;
+            font-size: 10px;
+        }
+    </style>
+</head>
+<body>
+<h1>Relatório de Veículos por Montadora</h1>
+
+<table>
+    <thead>
+    <tr>
+        <th>Montadora</th>
+        <th>Quantidade de Veículos</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="entry : ${veiculosPorMontadora.entrySet()}">
+        <td th:text="${entry.key}"></td>
+        <td th:text="${entry.value}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<div class="footer">
+    Relatório gerado em: <span th:text="${#dates.format(#dates.createNow(), 'dd/MM/yyyy HH:mm:ss')}"></span>
+</div>
+</body>
+</html>

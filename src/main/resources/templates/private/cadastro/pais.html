@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="HVAC Template">
+    <meta name="keywords" content="HVAC, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>AutoArena | Cadastro de País</title>
+
+    <div th:replace="~{fragments/privateCSS :: privateCss}"></div>
+
+
+</head>
+
+<body>
+
+
+<!-- WRAPPER -->
+<div id="wrapper">
+
+    <div th:replace="~{fragments/privateHeader :: headerFragment}"></div>
+
+    <div th:replace="~{fragments/privateLeftMenu :: leftMenuFragment}"></div>
+
+
+    <!-- MAIN -->
+    <div class="main">
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+            <div class="container-fluid">
+                <!--<h3 class="page-title">Page Header | Title</h3>-->
+                <h3 class="page-title"><p th:text="${pageTitle}"></p></h3>
+
+                <div class="panel panel-headline demo-icons">
+
+                    <div class="panel-body">
+
+                        <form th:action="@{/private/cadastro/pais/registro}" method="post">
+
+                            <input type="hidden" id="paisId" name="id" value="">
+                            <div class="form-group col-md-6">
+                                <label for="txtPais" class="control-label">Nome</label>
+                                <input id="txtPais" name="txtPais" type="text" class="form-control" placeholder="Digite o nome do país" required>
+                            </div>
+
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+
+                            <div class="form-group">
+                                <div class="form-group col-md-6">
+
+
+                                    <button type="submit" class="btn btn-default" id="submitButton">Salvar</button>
+                                    <button type="button" class="btn btn-default" id="cancelButton" style="display: none;">Cancelar</button>
+
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+
+                <div class="panel panel-headline demo-icons">
+                    <!--
+                    <div class="panel-heading">
+                        <h4 class="panel-title" th:text="${blockTitle}"></h4>
+                        <p class="panel-subtitle" th:text="${blockSubtitle}"></p>
+                    </div>
+                    -->
+                    <div class="panel-body">
+
+                        <h4 class="panel-title" th:text="Filtros"></h4>
+
+                        <hr>
+                        <form method="get" th:action="@{/private/cadastro/pais}">
+                            <div class="row">
+
+
+                                <div class="form-group col-md-6">
+                                    <label for="filtroNome">Nome</label>
+                                    <input type="text" id="filtroNome" name="nome" class="form-control" th:value="${filtroNome}" placeholder="Nome do País">
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label for="filtroOrdenacao">Ordenar por</label>
+                                    <select id="filtroOrdenacao" name="sort" class="form-control">
+                                        <option value="nome,asc" th:selected="${sort != null and sort == 'nome,asc'}">Nome (A-Z)</option>
+                                        <option value="nome,desc" th:selected="${sort != null and sort == 'nome,desc'}">Nome (Z-A)</option>
+                                        <option value="id,asc" th:selected="${sort != null and sort == 'id,asc'}">ID (Crescente)</option>
+                                        <option value="id,desc" th:selected="${sort != null and sort == 'id,desc'}">ID (Decrescente)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label for="filtroTamanho">Exibir Itens por página</label>
+                                    <select id="filtroTamanho" name="size" class="form-control">
+                                        <option value="5" th:selected="${size == 5}">5</option>
+                                        <option value="10" th:selected="${size == 10}">10</option>
+                                        <option value="15" th:selected="${size == 15}">15</option>
+                                        <option value="20" th:selected="${size == 20}">20</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-default">Filtrar e Ordenar</button>
+                                <a th:href="@{/private/cadastro/pais}" class="btn btn-default">Limpar Filtros</a>
+                            </div>
+                        </form>
+
+                        <hr>
+
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome</th>
+                                <th>Ações</th> </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="pais : ${paises}">
+                                <td th:text="${pais.id}"></td>
+                                <td th:text="${pais.nome}"></td>
+                                <td>
+                                    <!--<a href="#" class="btn btn-sm btn-info">Editar</a>-->
+                                    <!--<a href="#" class="btn btn-sm btn-danger">Excluir</a>-->
+                                    <button type="button" class="btn btn-sm btn-info edit-pais-btn" title="Editar"
+                                            th:data-id="${pais.id}"
+                                            th:data-nome="${pais.nome}">
+                                         Editar
+                                        <!--<i class="lnr lnr-pencil"></i>-->
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-danger delete-pais-btn" title="Excluir"
+                                            th:data-id="${pais.id}"
+                                            th:data-nome="${pais.nome}">
+                                         Excluir
+                                        <!--<i class="lnr lnr-trash"></i>-->
+                                    </button>
+                                </td>
+                                </td>
+                            </tr>
+                            <tr th:if="${#lists.isEmpty(paises)}">
+                                <td colspan="3" class="text-center">Nenhum país encontrado.</td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+
+
+
+                    <div th:if="${page.totalPages > 0}" class="text-center">
+                        <ul class="pagination">
+                            <li th:class="${page.first ? 'disabled' : ''}">
+                                <a th:href="@{/private/cadastro/pais(page=${0}, size=${size}, sort=${sort}, nome=${filtroNome})}">&laquo;</a>
+                            </li>
+                            <li th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}" th:class="${page.number == i ? 'active' : ''}">
+                                <a th:href="@{/private/cadastro/pais(page=${i}, size=${size}, sort=${sort}, nome=${filtroNome})}" th:text="${i + 1}"></a>
+                            </li>
+                            <li th:class="${page.last ? 'disabled' : ''}">
+                                <a th:href="@{/private/cadastro/pais(page=${page.totalPages - 1}, size=${size}, sort=${sort}, nome=${filtroNome})}">&raquo;</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+        <!-- END MAIN CONTENT -->
+    </div>
+    <!-- END MAIN -->
+
+
+    <div th:replace="~{fragments/privateFooter :: footerFragment}"></div>
+</div>
+
+
+<!-- END WRAPPER -->
+
+<div th:replace="~{fragments/privateScriptsJS :: privateScriptsJs}"></div>
+
+<script th:inline="javascript">
+    $(document).ready(function() {
+
+        // Listener para os botões "Editar"
+        $('.edit-pais-btn').on('click', function() {
+            var id = $(this).data('id');
+            var nome = $(this).data('nome');
+
+            // Preenche o formulário
+            $('#paisId').val(id);
+            $('#txtPais').val(nome);
+
+            // Altera o título do formulário e o texto do botão de submissão
+            //$('#formTitle').text('Editar País');
+            //$('#submitButton').text('Atualizar País');
+            $('#cancelButton').show(); // Mostra o botão de cancelar
+
+            // Opcional: Rola a página para o formulário
+            $('html, body').animate({
+                scrollTop: $('#paisForm').offset().top - 100 // Ajuste o offset conforme necessário
+            }, 500);
+        });
+
+        // Listener para o botão "Cancelar Edição"
+        $('#cancelButton').on('click', function() {
+            // Limpa o formulário
+            $('#paisId').val('');
+            $('#txtPais').val('');
+
+            // Restaura o título do formulário e o texto do botão de submissão
+            $('#formTitle').text('Cadastrar Novo País');
+            //$('#submitButton').text('Salvar País');
+            $('#cancelButton').hide(); // Esconde o botão de cancelar
+        });
+
+        // Listener para os botões "Excluir"
+        $('.delete-pais-btn').on('click', function() {
+            var id = $(this).data('id');
+            var nome = $(this).data('nome'); // Para usar na mensagem de confirmação
+
+            // Usa a confirmação nativa do navegador
+            var confirmDelete = confirm("Tem certeza que deseja excluir o país '" + nome + "'?");
+
+            if (confirmDelete) {
+                // Se o usuário confirmar (clicar em OK)
+
+                // Cria um formulário dinamicamente
+                var form = $('<form>', {
+                    'action': '/private/cadastro/pais/excluir', // Endpoint do controlador para exclusão
+                    'method': 'post',
+                    'style': 'display:none;'
+                });
+
+                // Adiciona o campo ID
+                $('<input>', {
+                    'type': 'hidden',
+                    'name': 'id',
+                    'value': id
+                }).appendTo(form);
+
+                // Adiciona o token CSRF (essencial para segurança)
+                // Lógica para pegar o token CSRF de um input hidden no formulário existente
+                if ($('input[name="_csrf"]').length > 0) {
+                     $('<input>', {
+                        'type': 'hidden',
+                        'name': $('input[name="_csrf"]').attr('name'),
+                        'value': $('input[name="_csrf"]').val()
+                    }).appendTo(form);
+                }
+                // Se você estiver usando meta tags para CSRF (verifique seu layout base/head):
+                // var csrfParameterName = $("meta[name='_csrf_parameter']").attr("content");
+                // var csrfToken = $("meta[name='_csrf']").attr("content");
+                // $('<input>', {
+                //     'type': 'hidden',
+                //     'name': csrfParameterName,
+                //     'value': csrfToken
+                // }).appendTo(form);
+
+
+                // Adiciona o formulário ao body e o submete
+                form.appendTo('body').submit();
+            }
+            // Se o usuário cancelar (clicar em Cancelar), nada acontece
+        });
+
+    });
+
+</script>
+
+</body>
+
+</html>

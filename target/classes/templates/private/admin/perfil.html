@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="AutoArena Application">
+    <meta name="keywords" content="AutoArena, springboot, html, thymeleaf">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title th:text="${pageTitle}"></title>
+
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <meta name="_csrf_parameter" th:content="${_csrf.parameterName}"/>
+
+    <div th:replace="~{fragments/privateCSS :: privateCss}"></div>
+
+</head>
+
+<body>
+
+<div id="wrapper">
+
+    <div th:replace="~{fragments/privateHeader :: headerFragment}"></div>
+
+    <div th:replace="~{fragments/privateLeftMenu :: leftMenuFragment}"></div>
+
+    <div class="main">
+        <div class="main-content">
+            <div class="container-fluid">
+                <h3 class="page-title"><p th:text="${pageTitle}"></p></h3>
+
+                <div class="panel panel-headline demo-icons">
+                    <!--
+                    <div class="panel-heading">
+                        <h4 class="panel-title">Minhas Informações de Perfil</h4>
+                    </div>
+                    -->
+                    <div class="panel-body">
+
+                        <!--<form th:action="${isAdmin ? '/private/admin/users/save' : '/private/perfil/salvar'}" method="post" id="perfilForm" enctype="multipart/form-data">-->
+                        <form th:action="${isAdmin ? '/private/admin/perfil/saveAdmin' : '/private/admin/perfil/save'}" method="post" id="perfilForm" enctype="multipart/form-data">
+                            <!--<form th:action="@{/private/admin/perfil}" method="post" enctype="multipart/form-data">-->
+
+                            <input type="hidden" name="origin" th:value="${origin}" />
+
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+                            <input type="hidden" id="id" name="id" th:value="${oldId}">
+
+                            <div class="form-group col-md-6">
+                                <label for="nome">Nome</label>
+                                <input type="text" class="form-control" id="nome" name="nome" th:value="${oldNome}" required>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label for="sobrenome">Sobrenome</label>
+                                <input type="text" class="form-control" id="sobrenome" name="sobrenome" th:value="${oldSobrenome}" required>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label for="username">Login</label>
+                                <input type="text" class="form-control" id="username" name="username" th:value="${oldUsername}" readonly>
+                                <small class="form-text text-muted">Este é seu nome de usuário para login.</small>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label for="senha">Nova Senha (deixe em branco para manter a atual):</label>
+                                <input type="password" class="form-control" id="senha" name="senha" placeholder="********">
+                                <small class="form-text text-muted">A senha deve ter no mínimo 8 caracteres e incluir letras maiúsculas, minúsculas, números e caracteres especiais.</small>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label for="contatoEmail">Email de Contato</label>
+                                <input type="email" class="form-control" id="contatoEmail" name="contatoEmail" th:value="${oldContatoEmail}" placeholder="Ex: meu.email@exemplo.com" required>
+                                <small class="form-text text-muted">Seu email para contato, não necessariamente seu nome de usuário.</small>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label for="dataNascimento">Data de Nascimento</label>
+                                <input type="date" class="form-control" id="dataNascimento" name="dataNascimento" th:value="${oldDataNascimento}" required>
+                            </div>
+
+                            <div class="form-group col-md-12" th:if="${isAdmin}">
+                                <label>Status</label><br>
+                                <label class="radio-inline">
+                                    <input type="radio" name="enabled" value="true" th:checked="${oldEnabled == true}"> Ativo
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="enabled" value="false" th:checked="${oldEnabled == false}"> Inativo
+                                </label>
+                                <br/>
+                                <small class="form-text text-muted">Apenas administradores podem alterar o status do usuário.</small>
+                            </div>
+                            <div class="form-group col-md-12" th:unless="${isAdmin}">
+                                <label>Status</label>
+                                <p th:text="${oldEnabled ? 'Ativo' : 'Inativo'}"></p>
+                                <small class="form-text text-muted">Seu status é gerenciado pelo administrador.</small>
+                            </div>
+
+                            <div class="form-group col-md-12">
+                                <label for="fotoFile">Foto de Perfil:</label>
+                                <input type="file" class="form-control-file" id="fotoFile" name="fotoFile" accept="image/*">
+                                <small class="form-text text-muted">Selecione um arquivo de imagem (JPG, PNG, GIF).</small>
+                                <div th:if="${oldFotoBase64}" class="mt-2">
+                                    <img th:src="@{'data:image/jpeg;base64,' + ${oldFotoBase64}}" alt="Foto de Perfil Atual" style="max-width: 150px; border: 1px solid #ccc; border-radius: 10%;">
+                                    <br/>
+                                    <small class="form-text text-muted">Sua foto atual. Selecione um novo arquivo para alterar.</small>
+                                </div>
+                                <div th:unless="${oldFotoBase64}">
+                                    <small class="form-text text-muted">Nenhuma foto de perfil definida.</small>
+                                </div>
+                            </div>
+
+                            <br/>
+                            <br/>
+                            <br/>
+
+                            <div class="form-group col-md-12">
+                                <button type="submit" id="submitButton" class="btn btn-default">Salvar</button>
+                            </div>
+
+                        </form>
+
+                        <!--
+                        <div th:if="${message}" th:classappend="${messageType == 'success' ? 'alert-success' : 'alert-danger'}" class="alert mt-3" role="alert">
+                            <span th:text="${message}"></span>
+                        </div>
+                        -->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/privateFooter :: footerFragment}"></div>
+</div>
+
+<div th:replace="~{fragments/privateScriptsJS :: privateScriptsJs}"></div>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var messageType = /*[[${messageType}]]*/ null;
+    var message = /*[[${message}]]*/ null;
+
+    if (message && messageType) {
+        $(document).ready(function() {
+            if (typeof toastr !== 'undefined') {
+                if (messageType === 'success') {
+                    toastr.success(message);
+                } else if (messageType === 'error') {
+                    toastr.error(message);
+                } else if (messageType === 'warning') {
+                    toastr.warning(message);
+                }
+            } else {
+                console.log(messageType + ": " + message);
+            }
+        });
+    }
+    /*]]>*/
+</script>
+
+</body>
+</html>

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="HVAC Template">
+    <meta name="keywords" content="HVAC, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>AutoArena | Contato</title>
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!--    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">-->
+
+    <link rel="stylesheet" th:href="@{/css/app_public/bootstrap.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/app_public/font-awesome.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/app_public/elegant-icons.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/app_public/nice-select.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/app_public/magnific-popup.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/app_public/jquery-ui.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/app_public/owl.carousel.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/app_public/slicknav.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/app_public/style.css}" type="text/css">
+
+
+    <style>
+        a {
+            font-weight: bold;
+        }
+        a:hover {
+            color:red;
+        }
+    </style>
+
+</head>
+
+<body>
+
+
+<!-- Page Preloder -->
+<div id="preloder">
+    <div class="loader"></div>
+</div>
+
+
+<!--<div th:replace="header :: headerFragment"></div>-->
+<div th:replace="~{fragments/publicHeader :: headerFragment}"></div>
+
+<!-- Breadcrumb End -->
+<div class="breadcrumb-option set-bg" data-setbg="img/breadcrumb-bg.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    <h2>Contate-nos</h2>
+                    <div class="breadcrumb__links">
+                        <!--<a href="../index.html"><i class="fa fa-home"></i> Home</a>-->
+                        <a th:href="@{/}"><i class="fa fa-home"></i> Home</a>
+                        <span>Contate-nos</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb Begin -->
+
+<!-- Contact Section Begin -->
+<section class="contact spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-6">
+                <div class="contact__text">
+                    <div class="section-title">
+                        <!--
+                        <h2>Let’s Work Together</h2>
+                        <p>To make requests for further information, contact us via our social channels.</p>
+                        -->
+                        <h2>Vamos Trabalhar Juntos</h2>
+                        <p>Para solicitar maiores informações, contate-nos em canais sociais.</p>
+                    </div>
+                    <ul>
+                        <!--
+                        <li><span>Weekday</span> 08:00 am to 18:00 pm</li>
+                        <li><span>Saturday:</span> 10:00 am to 16:00 pm</li>
+                        <li><span>Sunday:</span> Closed</li>
+                        -->
+                        <li><span>Segunda</span> 08:00 am até 18:00 pm</li>
+                        <li><span>Terça</span> 08:00 am até 18:00 pm</li>
+                        <li><span>Quarta</span> 08:00 am até 18:00 pm</li>
+                        <li><span>Quinta</span> 08:00 am até 18:00 pm</li>
+                        <li><span>Sexta</span> 08:00 am até 18:00 pm</li>
+                        <li><span>Sábado</span> 08:00 am até 14:00 pm</li>
+                        <li><span>Sunday</span> Fechado</li>
+
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6">
+                <div class="contact__form">
+                    <form action="#">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <input type="text" placeholder="Nome">
+                            </div>
+                            <div class="col-lg-6">
+                                <input type="text" placeholder="Email">
+                            </div>
+                        </div>
+                        <input type="text" placeholder="Assunto">
+                        <textarea placeholder="Sua dúvida"></textarea>
+                        <button type="submit" class="site-btn">Enviar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Contact Section End -->
+
+<!-- Contact Address Begin -->
+<div class="contact-address">
+    <div class="container">
+        <div class="contact__address__text">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 col-sm-6">
+                    <div class="contact__address__item">
+                        <h4>Barueri Showroom</h4>
+                        <p>Av. da Aldeira, 687, Apto 72, Nova Aldeinha, Barueri</p>
+                        <!--<p>thiers.fb@gmail.com</p>-->
+                        <p><a th:href="'mailto:' + 'thiers.fb@gmail.com'">thiers.fb@gmail.com</a></p>
+                        <!--<a th:href="'mailto:' + ${emailContato}" th:text="${emailContato}">email@exemplo.com</a>-->
+                        <span>+55 (19) 98831-2067</span>
+                    </div>
+                </div>
+                <div class="col-lg-8 col-md-12 col col-sm-12">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3657.487841320492!2d-46.65653138556391!3d-23.55172268468744!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce5957b9c9b1f7%3A0x6331a980c651a74d!2sAv.%20Paulista%2C%20S%C3%A3o%20Paulo%20-%20SP!5e0!3m2!1spt-BR!2sbr!4v1628108422471!5m2!1spt-BR!2sbr" width="750" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+                <!--
+                <div class="col-lg-4 col-md-6 col-sm-6">
+                    <div class="contact__address__item">
+                        <h4>California Showroom</h4>
+                        <p>625 Gloria Union, California, United Stated Colorlib.california@gmail.com</p>
+                        <span>(+12) 456 678 9100</span>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6">
+                    <div class="contact__address__item">
+                        <h4>New York Showroom</h4>
+                        <p>8235 South Ave. Jamestown, NewYork Colorlib.Newyork@gmail.com</p>
+                        <span>(+12) 456 678 9100</span>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6">
+                    <div class="contact__address__item">
+                        <h4>Florida Showroom</h4>
+                        <p>497 Beaver Ridge St. Daytona Beach, Florida Colorlib.california@gmail.com</p>
+                        <span>(+12) 456 678 9100</span>
+                    </div>
+                </div>
+                -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Contact Address End -->
+
+<!--<div th:replace="footer :: footerFragment"></div>-->
+<div th:replace="~{fragments/publicFooter :: footerFragment}"></div>
+
+<!-- Search Begin -->
+<div class="search-model">
+    <div class="h-100 d-flex align-items-center justify-content-center">
+        <div class="search-close-switch">+</div>
+        <form class="search-model-form">
+            <input type="text" id="search-input" placeholder="Search here.....">
+        </form>
+    </div>
+</div>
+<!-- Search End -->
+
+
+<script th:src="@{/js/app_public/jquery-3.3.1.min.js}"></script>
+<script th:src="@{/js/app_public/bootstrap.min.js}"></script>
+<script th:src="@{/js/app_public/jquery.nice-select.min.js}"></script>
+<script th:src="@{/js/app_public/jquery-ui.min.js}"></script>
+<script th:src="@{/js/app_public/jquery.magnific-popup.min.js}"></script>
+<script th:src="@{/js/app_public/mixitup.min.js}"></script>
+<script th:src="@{/js/app_public/jquery.slicknav.js}"></script>
+<script th:src="@{/js/app_public/owl.carousel.min.js}"></script>
+<script th:src="@{/js/app_public/main.js}"></script>
+
+<script>
+    window.onscroll = function() {myFunction()};
+
+    var header = document.getElementById("header__navbar");
+    var sticky = header.offsetTop;
+
+    function myFunction() {
+      if (window.pageYOffset > sticky) {
+        header.classList.add("sticky");
+      } else {
+        header.classList.remove("sticky");
+      }
+    }
+</script>
+
+
+
+</body>
+
+</html>

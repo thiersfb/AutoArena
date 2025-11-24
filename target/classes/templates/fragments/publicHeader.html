@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="headerFragment">
+
+    <header class="header">
+
+
+        <!-- Offcanvas Menu Begin -->
+        <div class="offcanvas-menu-overlay"></div>
+        <div class="offcanvas-menu-wrapper">
+            <div class="offcanvas__widget">
+                <a href="#"><i class="fa fa-cart-plus"></i></a>
+                <a href="#" class="search-switch"><i class="fa fa-search"></i></a>
+                <a href="#" class="primary-btn">Add Car</a>
+            </div>
+            <div class="offcanvas__logo">
+            <!--<a href="./index.html"><img src="img/logo.png" alt=""></a>-->
+                <a th:href="@{/}"><img src="img/logo.png" width="130px" height="30px" alt=""></a>
+            </div>
+            <div id="mobile-menu-wrap"></div>
+            <ul class="offcanvas__widget__add">
+                <!-- <li><i class="fa fa-clock-o"></i> Week day: 08:00 am to 18:00 pm</li> -->
+                <li><i class="fa fa-envelope-o"></i> mail@domain.com</li>
+            </ul>
+            <div class="offcanvas__phone__num">
+                <a href="https://api.whatsapp.com/send?phone=5519988312067">
+                    <!-- <i class="fa fa-phone"></i> -->
+                    <i class="fa fa-whatsapp" aria-hidden="true"></i>
+
+                    <span>+55 (19) 98831-2067</span>
+                </a>
+            </div>
+            <div class="offcanvas__social">
+                <!-- <a href="#"><i class="fa fa-facebook"></i></a> -->
+                <!-- <a href="#"><i class="fa fa-twitter"></i></a> -->
+                <!-- <a href="#"><i class="fa fa-google"></i></a> -->
+                <!-- <a href="#"><i class="fa fa-instagram"></i></a> -->
+                <a href="#"><i class="fa fa-facebook"></i></a>
+                <!-- <a href="#"><i class="fa fa-twitter"></i></a> -->
+                <!-- <a href="#"><i class="fa fa-google"></i></a> -->
+                <a href="#"><i class="fa fa-instagram"></i></a>
+                <a href="#"><i class="fa fa-linkedin"></i></a>
+                <a href="#"><i class="fa fa-user"></i></a>
+
+            </div>
+        </div>
+        <!-- Offcanvas Menu End -->
+
+        <div class="header__top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-7">
+                        <ul class="header__top__widget">
+                            <a href="#"><i class="fa fa-envelope-o"></i> mail@domain.com</a>
+                            <span class="mx-md-2 d-inline-block"></span>
+                            <a href="https://api.whatsapp.com/send?phone=5519988312067">
+                                <i class="fa fa-whatsapp" aria-hidden="true"></i>
+                                <span> +55 (19) 98831-2067</span>
+                            </a>
+                        </ul>
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="header__top__right">
+                            <div class="header__top__social">
+                                <a href="https://www.facebook.com/" target="_blank"><i class="fa fa-facebook"></i></a>
+                                <a href="https://www.instagram.com/" target="_blank"><i class="fa fa-instagram"></i></a>
+                                <a href="https://www.linkedin.com/" target="_blank"><i class="fa fa-linkedin"></i></a>
+                                <span class="mx-md-2 d-inline-block"></span>
+                                <a th:href="@{/login}"><i class="fa fa-user"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="header__navbar" id="header__navbar">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-2">
+                        <div class="header__logo">
+                            <!--<a href="./index.html"><img src="img/logo.png" alt=""></a>-->
+                            <!--<a th:href="@{/}"><img src="img/logo.png" alt=""></a>-->
+                            <a th:href="@{/}"><img th:src="@{/img/logo.png}" alt=""></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-10">
+                        <div class="header__nav">
+                            <nav class="header__menu">
+                                <ul>
+                                    <!--<li class="active"><a href="./index.html">Home</a></li>-->
+                                    <li th:classappend ="${currentUri  == '/'} ? 'active' : ''">
+                                        <a th:href="@{/}">Home</a>
+                                    </li>
+                                    <!--<li><a th:href="@{/empresa}">Empresa</a></li>-->
+                                    <li th:classappend="${currentUri  == '/empresa'} ? 'active' : ''">
+                                        <a th:href="@{/empresa}">Empresa</a>
+                                    </li>
+                                    <!--<li><a href="./car.html">Estoque</a></li>-->
+                                    <li th:classappend="${currentUri  == '/estoque'} ? 'active' : ''">
+                                        <a th:href="@{/estoque}">Estoque</a>
+                                    </li>
+                                    <!--<li><a href="./blog.html">Blog</a></li>-->
+                                    <!--
+                                    <li><a href="#">Páginas</a>
+                                        <ul class="dropdown">
+                                            <li><a href="./car-details.html">Carro Detalhes</a></li>
+                                            <li th:classappend="${currentUri  == '/detalhes'} ? 'active' : ''">
+                                                <a th:href="@{/detalhes}">Detalhes do Veículo</a>
+                                            </li>
+                                            <li><a href="./blog-details.html">Blog Detalhes</a></li>
+                                        </ul>
+                                    </li>
+                                    -->
+                                    <!--<li><a href="./contact.html">Contato</a></li>-->
+                                    <li th:classappend="${currentUri  == '/contato'} ? 'active' : ''">
+                                        <a th:href="@{/contato}">Contato</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+                <!--
+                <div class="canvas__open">
+                    <span class="fa fa-bars"></span>
+                </div>
+                -->
+            </div>
+        </div>
+    </header>
+
+</div>
+
+</body>
+</html>

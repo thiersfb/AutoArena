@@ -1,0 +1,1406 @@
+<!doctype html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns="http://www.w3.org/1999/html">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="AutoArena Application">
+  <meta name="keywords" content="AutoArena, springboot, html, thymeleaf">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title th:text="${pageTitle}"></title>
+
+  <meta name="_csrf" th:content="${_csrf.token}"/>
+  <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+  <meta name="_csrf_parameter" th:content="${_csrf.parameterName}"/>
+
+  <div th:replace="~{fragments/privateCSS :: privateCss}"></div>
+
+</head>
+
+<body>
+
+<div id="wrapper">
+
+  <div th:replace="~{fragments/privateHeader :: headerFragment}"></div>
+
+  <div th:replace="~{fragments/privateLeftMenu :: leftMenuFragment}"></div>
+
+  <div class="main">
+    <div class="main-content">
+      <div class="container-fluid">
+        <h3 class="page-title"><p th:text="${pageTitle}"></p></h3>
+
+        <div class="panel panel-headline demo-icons">
+          <!--
+          <div class="panel-heading">
+            <h4 class="panel-title" id="formTitle">Cadastrar Novo Veículo</h4>
+          </div>
+          -->
+          <div class="panel-body">
+            <form id="veiculoForm" th:action="@{/private/cadastro/veiculos/save}" th:object="${veiculo}" method="post">
+              <input type="hidden" id="id" name="id" th:field="*{id}" />
+
+
+
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="paisSelect">País</label>
+                    <select id="paisSelect" name="paisId" class="form-control" required>
+                      <option value="">Selecione um País</option>
+                      <option th:each="pais : ${paises}"
+                              th:value="${pais.id}"
+                              th:text="${pais.nome}"
+                              th:selected="${veiculo.pais != null and veiculo.pais.id == pais.id}">
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="estadoSelect">Estado</label>
+                    <select id="estadoSelect" name="estadoId" class="form-control" required>
+                      <option value="">Selecione um Estado</option>
+                      <option th:if="${veiculo.estado != null}"
+                              th:value="${veiculo.estado.id}"
+                              th:text="${veiculo.estado.nome}"
+                              selected>
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="cidadeSelect">Cidade</label>
+                    <select id="cidadeSelect" name="cidadeId" class="form-control" required>
+                      <option value="">Selecione uma Cidade</option>
+                      <option th:if="${veiculo.cidade != null}"
+                              th:value="${veiculo.cidade.id}"
+                              th:text="${veiculo.cidade.nome}"
+                              selected>
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="tipoVeiculoSelect">Tipo de Veículo</label>
+                    <select id="tipoVeiculoSelect" name="tipoVeiculoId" class="form-control" required>
+                      <option value="">Selecione um Tipo de Veículo</option>
+                      <option th:each="tipo : ${tiposVeiculo}"
+                              th:value="${tipo.id}"
+                              th:text="${tipo.nome}"
+                              th:selected="${veiculo.tipoVeiculo != null and veiculo.tipoVeiculo.id == tipo.id}">
+                      </option>
+                    </select>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="montadoraSelect">Montadora</label>
+                    <select id="montadoraSelect" name="montadoraId" class="form-control" required>
+                      <option value="">Selecione uma Montadora</option>
+                      <option th:each="montadora : ${montadoras}"
+                              th:value="${montadora.id}"
+                              th:text="${montadora.nome}"
+                              th:selected="${veiculo.montadora != null and veiculo.montadora.id == montadora.id}">
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="modeloSelect">Modelo</label>
+                    <select id="modeloSelect" name="modeloId" class="form-control" required>
+                      <option value="">Selecione um Modelo</option>
+                      <option th:if="${veiculo.modelo != null}"
+                              th:value="${veiculo.modelo.id}"
+                              th:text="${veiculo.modelo.nome}"
+                              selected>
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Tipo de Direção</label>
+                            <select id="tipoDirecao" name="tipoDirecao" class="form-control" required>
+                                <option value="">Selecione um Tipo</option>
+                                <option th:each="tipo : ${tiposDirecao}"
+                                        th:value="${tipo}"
+                                        th:text="${tipo.descricao}"
+                                        th:selected="${veiculo.tipoDirecao != null and veiculo.tipoDirecao == tipo}">
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Carroceria</label>
+                            <select id="carroceria" name="carroceria" class="form-control" required>
+                                <option value="">Selecione uma Carroceria</option>
+                                <option th:each="carroceria : ${tiposCarroceria}"
+                                        th:value="${carroceria}"
+                                        th:text="${carroceria.descricao}"
+                                        th:selected="${veiculo.carroceria != null and veiculo.carroceria == carroceria}">
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Tipo de Combustível</label>
+                            <select id="tipoCombustivel" name="tipoCombustivel" class="form-control" required>
+                                <option value="">Selecione um Combustível</option>
+                                <option th:each="combustivel : ${tiposCombustivel}"
+                                        th:value="${combustivel}"
+                                        th:text="${combustivel.descricao}"
+                                        th:selected="${veiculo.tipoCombustivel != null and veiculo.tipoCombustivel == combustivel}">
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Cor</label>
+                            <select id="cor" name="cor" class="form-control" required>
+                                <option value="">Selecione uma Cor</option>
+                                <option th:each="cor : ${cores}"
+                                        th:value="${cor}"
+                                        th:text="${cor.descricao}"
+                                        th:selected="${veiculo.cor != null and veiculo.cor == cor}">
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+
+              <div class="row">
+                <div class="col-md-2">
+                  <div class="form-group">
+                    <label for="anoFabricacao">Ano Fabricação</label>
+                    <input type="number" id="anoFabricacao" name="anoFabricacao" class="form-control" th:field="*{anoFabricacao}" required min="1900" max="2100">
+                  </div>
+                </div>
+                  <div class="col-md-2">
+                      <div class="form-group">
+                          <label for="anoModelo">Ano Modelo</label>
+                          <input type="number" id="anoModelo" name="anoModelo" class="form-control" th:field="*{anoModelo}" required min="1900" max="2100">
+                      </div>
+                  </div>
+                  <!--
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="cor">Cor</label>
+                    <input type="text" id="cor" name="cor" class="form-control" th:field="*{cor}" required maxlength="50">
+                  </div>
+                </div>
+                  -->
+
+                  <div class="col-md-4">
+                      <div class="form-group">
+                          <label for="motor">Motor</label>
+                          <input type="text" id="motor" name="motor" class="form-control" th:field="*{motor}" required maxlength="100">
+                      </div>
+                  </div>
+
+                  <div class="col-md-2">
+                      <div class="form-group">
+                          <label for="quilometragem">Quilometragem</label>
+                          <input type="number" id="quilometragem" name="quilometragem" class="form-control" th:field="*{quilometragem}" required min="0">
+                      </div>
+                  </div>
+                  <div class="col-md-2">
+                      <div class="form-group">
+                          <label for="finalPlaca">Final Placa</label>
+                          <input type="number" id="finalPlaca" name="finalPlaca" class="form-control" th:field="*{finalPlaca}" required min="0" max="9">
+                      </div>
+                  </div>
+
+              </div>
+
+                  <!--
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="motor">Motor</label>
+                    <input type="text" id="motor" name="motor" class="form-control" th:field="*{motor}" required maxlength="100">
+                  </div>
+                </div>
+
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="quilometragem">Quilometragem</label>
+                    <input type="number" id="quilometragem" name="quilometragem" class="form-control" th:field="*{quilometragem}" required min="0">
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="finalPlaca">Final Placa</label>
+                    <input type="number" id="finalPlaca" name="finalPlaca" class="form-control" th:field="*{finalPlaca}" required min="0" max="9">
+                  </div>
+                </div>
+
+              </div>
+                  -->
+
+
+
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label>Opcionais</label>
+                    <div class="row">
+                      <div class="col-6 col-sm-4 col-md-6 col-lg-2">
+                        <label class="fancy-checkbox">
+                        <input type="checkbox" name="temArCondicionado" th:checked="*{temArCondicionado}">
+                        <span>Ar Condicionado</span>
+                      </label>
+                      </div>
+                      <div class="col-6 col-sm-4 col-md-6 col-lg-2">
+                        <label class="fancy-checkbox">
+                          <input type="checkbox" name="temVidroEletrico" th:checked="*{temVidroEletrico}">
+                          <span>Vidro Elétrico</span>
+                        </label>
+                      </div>
+                      <div class="col-6 col-sm-4 col-md-6 col-lg-2">
+                        <label class="fancy-checkbox">
+                          <input type="checkbox" name="temTravasEletricas" th:checked="*{temTravasEletricas}">
+                          <span>Travas Elétricas</span>
+                        </label>
+                      </div>
+
+                      <div class="col-6 col-sm-4 col-md-6 col-lg-2">
+                        <label class="fancy-checkbox">
+                          <input type="checkbox" name="temFreioAbs" th:checked="*{temFreioAbs}">
+                          <span>Freios ABS</span>
+                        </label>
+                      </div>
+                      <div class="col-6 col-sm-4 col-md-6 col-lg-2">
+                        <label class="fancy-checkbox">
+                          <input type="checkbox" name="temAirBag" th:checked="*{temAirBag}">
+                          <span>Airbag</span>
+                        </label>
+                      </div>
+                      <div class="col-6 col-sm-4 col-md-6 col-lg-2">
+                        <label class="fancy-checkbox">
+                          <input type="checkbox" name="temCentralMultimidia" th:checked="*{temCentralMultimidia}">
+                          <span>Central Multimídia</span>
+                        </label>
+                      </div>
+
+                      <div class="col-6 col-sm-4 col-md-6 col-lg-2">
+                        <label class="fancy-checkbox">
+                          <input type="checkbox" name="temComandosVolante" th:checked="*{temComandosVolante}">
+                          <span>Comandos no Volante</span>
+                        </label>
+                      </div>
+
+                      <div class="col-6 col-sm-4 col-md-6 col-lg-2">
+                        <label class="fancy-checkbox">
+                          <input type="checkbox" name="temAlarme" th:checked="*{temAlarme}">
+                          <span>Alarme</span>
+                        </label>
+                      </div>
+                      <div class="col-6 col-sm-4 col-md-6 col-lg-2">
+                        <label class="fancy-checkbox">
+                          <input type="checkbox" name="temLimpadorTraseiro" th:checked="*{temLimpadorTraseiro}">
+                          <span>Limpador Traseiro</span>
+                        </label>
+                      </div>
+                      <div class="col-6 col-sm-4 col-md-6 col-lg-2">
+                        <label class="fancy-checkbox">
+                          <input type="checkbox" name="temDesembacadorTraseiro" th:checked="*{temDesembacadorTraseiro}">
+                          <span>Desembaçador Traseiro</span>
+                        </label>
+                      </div>
+                      <div class="col-6 col-sm-4 col-md-6 col-lg-2">
+                        <label class="fancy-checkbox">
+                          <input type="checkbox" name="temCameraRe" th:checked="*{temCameraRe}">
+                          <span>Câmera de Ré</span>
+                        </label>
+                      </div>
+                      <div class="col-6 col-sm-4 col-md-6 col-lg-2">
+                        <label class="fancy-checkbox">
+                          <input type="checkbox" name="temSensorEstacionamento" th:checked="*{temSensorEstacionamento}">
+                          <span>Sensor de Estacionamento</span>
+                        </label>
+                      </div>
+
+                      <div class="col-6 col-sm-4 col-md-6 col-lg-2">
+                        <label class="fancy-checkbox">
+                          <input type="checkbox" name="temCambioAutomatico" th:checked="*{temCambioAutomatico}">
+                          <span>Cambio Automático</span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="precoAnunciado">Preço Anuncio</label>
+                    <input type="number" id="precoAnunciado" name="precoAnunciado" class="form-control" th:field="*{precoAnunciado}" step="0.01" min="0" required>
+                  </div>
+                </div>
+                <!--
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label>Status de Venda</label><br>
+                    <label class="fancy-radio">
+                      <input type="radio" id="forSaleTrue" name="forSale" value="true" th:field="*{forSale}">
+                      <span><i></i>À Venda</span>
+                    </label>
+                    <label class="fancy-radio">
+                      <input type="radio" id="forSaleFalse" name="forSale" value="false" th:field="*{forSale}">
+                      <span><i></i>Vendido</span>
+                    </label>
+                  </div>
+                </div>
+                -->
+              </div>
+              <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="informacoesAdicionais">Informações Adicionais</label>
+                            <textarea type="text" id="informacoesAdicionais" name="informacoesAdicionais" class="form-control" th:field="*{informacoesAdicionais}"></textarea>
+                        </div>
+                    </div>
+              </div>
+
+              <!--
+              <div class="row" id="dataVendaGroup">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="dataVendaInput">Data da Venda</label>
+                    <input type="date" id="dataVendaInput" name="dataVenda" class="form-control" th:field="*{dataVenda}">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="precoVendido">Preço Vendido</label>
+                    <input type="number" id="precoVendido" name="precoVendido" class="form-control" th:field="*{precoVendido}" step="0.01" min="0">
+                  </div>
+                </div>
+              </div>
+              -->
+
+              <button type="submit" id="submitButton" class="btn btn-default">Salvar</button>
+              <button type="button" id="cancelButton" class="btn btn-default" style="display:none;">Cancelar</button>
+            </form>
+          </div>
+        </div>
+
+        <div class="panel">
+            <!--
+          <div class="panel-heading">
+            <h4 class="panel-title" th:text="${blockTitle}"></h4>
+            <p class="panel-subtitle" th:text="${blockSubtitle}"></p>
+          </div>
+            -->
+          <div class="panel-body">
+
+              <h4 class="panel-title" th:text="Filtros"></h4>
+              <hr>
+
+              <form method="get" th:action="@{/private/cadastro/veiculos}">
+                  <div class="row">
+                      <div class="form-group col-md-2">
+                          <label for="filtroId">ID do Veículo</label>
+                          <input type="number" id="filtroId" name="id" class="form-control" th:value="${filtroId}" placeholder="ID do Veículo">
+                      </div>
+                      <div class="form-group col-md-2">
+                          <label for="filtroTipoVeiculoId">Tipo de Veículo</label>
+                          <select id="filtroTipoVeiculoId" name="tipoVeiculoId" class="form-control">
+                              <option value="">Todos</option>
+                              <option th:each="tipo : ${tiposVeiculo}"
+                                      th:value="${tipo.id}"
+                                      th:text="${tipo.nome}"
+                                      th:selected="${filtroTipoVeiculoId != null and filtroTipoVeiculoId == tipo.id}">
+                              </option>
+                          </select>
+                      </div>
+                      <div class="form-group col-md-2">
+                          <label for="filtroMontadoraId">Montadora</label>
+                          <select id="filtroMontadoraId" name="montadoraId" class="form-control">
+                              <option value="">Todas</option>
+                              <option th:each="montadora : ${montadoras}"
+                                      th:value="${montadora.id}"
+                                      th:text="${montadora.nome}"
+                                      th:selected="${filtroMontadoraId != null and filtroMontadoraId == montadora.id}">
+                              </option>
+                          </select>
+                      </div>
+                      <div class="form-group col-md-2">
+                          <label for="filtroModeloId">Modelo</label>
+                          <select id="filtroModeloId" name="modeloId" class="form-control">
+                              <option value="">Todos</option>
+                              <option th:each="modelo : ${modelosFiltrar}"
+                                      th:value="${modelo.id}"
+                                      th:text="${modelo.nome}"
+                                      th:selected="${filtroModeloId != null and filtroModeloId == modelo.id}">
+                              </option>
+                          </select>
+                      </div>
+
+
+                      <!--
+                      <div class="form-group col-md-3">
+                          <label for="filtroPlaca">Placa</label>
+                          <input type="text" id="filtroPlaca" name="placa" class="form-control" th:value="${filtroPlaca}" placeholder="Placa do Veículo">
+                      </div>
+                      -->
+
+
+                      <div class="form-group col-md-2">
+                          <label for="filtroOrdenacao">Ordenar por</label>
+                          <select id="filtroOrdenacao" name="sort" class="form-control">
+                              <option value="">Selecione</option>
+
+                              <option value="id,asc" th:selected="${sort != null and sort == 'id,asc'}">ID (Crescente)</option>
+                              <option value="id,desc" th:selected="${sort != null and sort == 'id,desc'}">ID (Decrescente)</option>
+                              <option value="montadora.nome,asc" th:selected="${sort != null and sort == 'montadora.nome,asc'}">Montadora (A-Z)</option>
+                              <option value="montadora.nome,desc" th:selected="${sort != null and sort == 'montadora.nome,desc'}">Montadora (Z-A)</option>
+                              <option value="modelo.nome,asc" th:selected="${sort != null and sort == 'modelo.nome,asc'}">Modelo (A-Z)</option>
+                              <option value="modelo.nome,desc" th:selected="${sort != null and sort == 'modelo.nome,desc'}">Modelo (Z-A)</option>
+                              <option value="precoAnunciado,asc" th:selected="${sort != null and sort == 'precoAnunciado,asc'}">Preço Anunciado (Crescente)</option>
+                              <option value="precoAnunciado,desc" th:selected="${sort != null and sort == 'precoAnunciado,desc'}">Preço Anunciado (Decrescente)</option>
+                              <!--
+
+                              veiculo.precoAnunciado
+
+                              <option value="placa,asc" th:selected="${sort != null and sort == 'placa,asc'}">Placa (A-Z)</option>
+                              <option value="placa,desc" th:selected="${sort != null and sort == 'placa,desc'}">Placa (Z-A)</option>
+                              <option value="forSale,desc" th:selected="${sort != null and sort == 'forSale,desc'}">Venda (Sim primeiro)</option>
+                              -->
+                          </select>
+                      </div>
+
+                      <div class="form-group col-md-2">
+                          <label for="filtroTamanho">Exibir Itens por página</label>
+                          <select id="filtroTamanho" name="size" class="form-control">
+                              <!--<option value="2" th:selected="${size == 2}">2</option>-->
+                              <option value="5" th:selected="${size == 5}">5</option>
+                              <option value="10" th:selected="${size == 10}">10</option>
+                              <option value="15" th:selected="${size == 15}">15</option>
+                              <option value="20" th:selected="${size == 20}">20</option>
+                          </select>
+                      </div>
+
+
+
+                  </div>
+                  <div class="row">
+                      <!--
+                      <div class="form-group col-md-3">
+                          <label for="filtroForSale">Disponível para venda</label>
+                          <select id="filtroForSale" name="forSale" class="form-control">
+                              <option value="">Todos</option>
+                              <option value="true" th:selected="${filtroForSale != null and filtroForSale == true}">Sim</option>
+                              <option value="false" th:selected="${filtroForSale != null and filtroForSale == false}">Não</option>
+                          </select>
+                      </div>
+                      -->
+
+
+
+                  </div>
+                  <div class="form-group">
+                      <button type="submit" class="btn btn-default">Filtrar e Ordenar</button>
+                      <a th:href="@{/private/cadastro/veiculos}" class="btn btn-default">Limpar Filtros</a>
+                  </div>
+                  <div class="row">
+
+
+                  </div>
+
+              </form>
+
+              <hr>
+
+            <div class="table-responsive">
+              <table class="table table-striped">
+              <thead>
+              <tr>
+                <th>ID</th>
+                <th>Tipo</th>
+                <th>Montadora</th>
+                <th>Modelo</th>
+                <th>Ano Mod.</th>
+                <th>Ano Fab.</th>
+                <th>Cor</th>
+                <th>KM</th>
+                <th>Preço Anunciado</th>
+                <th>Localizado Em</th>
+                <th>Status</th>
+                <th sec:authorize="hasAnyRole('ADMIN', 'SELLER')">Cadastrado Por</th>
+                <th>Ações</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr th:each="veiculo : ${veiculos}">
+                <td th:text="${veiculo.id}"></td>
+                <td th:text="${veiculo.tipoVeiculo.nome}"></td>
+                <td th:text="${veiculo.montadora.nome}"></td>
+                <td th:text="${veiculo.modelo.nome}"></td>
+                <td th:text="${veiculo.anoModelo}"></td>
+                <td th:text="${veiculo.anoFabricacao}"></td>
+                <td th:text="${veiculo.cor}"></td>
+                <td th:text="${veiculo.quilometragem}"></td>
+                <td th:text="${#numbers.formatCurrency(veiculo.precoAnunciado)}"></td>
+                <td th:text="${veiculo.cidade.nome} + '-' + ${veiculo.estado.uf} + ' (' + ${veiculo.pais.nome} +')' "></td>
+                <td>
+                  <span th:if="${veiculo.forSale}" class="label label-success">À Venda</span>
+                  <span th:if="${!veiculo.forSale}" class="label label-danger">Vendido</span>
+                </td>
+                <!--<td sec:authorize="hasAnyRole('ADMIN', 'SELLER')" th:text="${veiculo.usuarioCadastro != null ? veiculo.usuarioCadastro.username : 'N/A'}"></td>-->
+                <td sec:authorize="hasAnyRole('ADMIN', 'SELLER')" th:text="${veiculo.usuarioCadastro != null ? veiculo.usuarioCadastro.nome + ' ' + veiculo.usuarioCadastro.sobrenome + ' (' + veiculo.usuarioCadastro.username + ')' : 'N/A'}"></td>
+
+                <td>
+                  <button class="btn btn-info btn-xs btn-edit"
+                          th:data-id="${veiculo.id}"
+                          th:data-tipoveiculo-id="${veiculo.tipoVeiculo.id}"
+                          th:data-montadora-id="${veiculo.montadora.id}"
+                          th:data-modelo-id="${veiculo.modelo.id}"
+                          th:data-ano-modelo="${veiculo.anoModelo}"
+                          th:data-ano-fabricacao="${veiculo.anoFabricacao}"
+                          th:data-cor="${veiculo.cor}"
+                          th:data-motor="${veiculo.motor}"
+                          th:data-tem-ar="${veiculo.temArCondicionado}"
+                          th:data-tem-vidro="${veiculo.temVidroEletrico}"
+                          th:data-tem-travas="${veiculo.temTravasEletricas}"
+
+                          th:data-tem-freioabs="${veiculo.temFreioAbs}"
+                          th:data-tem-airbag="${veiculo.temAirBag}"
+                          th:data-tem-centralmultimidia="${veiculo.temCentralMultimidia}"
+                          th:data-tem-comandosvolante="${veiculo.temComandosVolante}"
+                          th:data-tem-alarme="${veiculo.temAlarme}"
+                          th:data-tem-limpadortraseiro="${veiculo.temLimpadorTraseiro}"
+                          th:data-tem-desembacadortraseiro="${veiculo.temDesembacadorTraseiro}"
+                          th:data-tem-camerare="${veiculo.temCameraRe}"
+                          th:data-tem-sensorestacionamento="${veiculo.temSensorEstacionamento}"
+                          th:data-tem-cambioautomatico="${veiculo.temCambioAutomatico}"
+
+                          th:data-tipo-direcao="${veiculo.tipoDirecao}"
+                          th:data-final-placa="${veiculo.finalPlaca}"
+                          th:data-carroceria="${veiculo.carroceria}"
+                          th:data-quilometragem="${veiculo.quilometragem}"
+                          th:data-tipo-combustivel="${veiculo.tipoCombustivel}"
+                          th:data-for-sale="${veiculo.forSale}"
+                          th:data-data-venda="${veiculo.dataVenda}"
+                          th:data-preco-anunciado="${veiculo.precoAnunciado}"
+                          th:data-informacoes-adicionais="${veiculo.informacoesAdicionais}"
+
+                          th:data-preco-vendido="${veiculo.precoVendido}"
+                          th:data-pais-id="${veiculo.pais != null ? veiculo.pais.id : ''}"
+                          th:data-estado-id="${veiculo.estado != null ? veiculo.estado.id : ''}"
+                          th:data-cidade-id="${veiculo.cidade != null ? veiculo.cidade.id : ''}"
+                          title="Editar">
+                    <i class="fa fa-pencil"></i> Editar
+                  </button>
+
+                  <!--<a th:href="@{/private/veiculos/fotos/{veiculoId}(veiculoId=${veiculo.id})}"-->
+                  <a th:href="@{/private/cadastro/veiculosFotos/{veiculoId}(veiculoId=${veiculo.id})}"
+                     class="btn btn-primary btn-sm"
+                     title="Gerenciar Fotos">
+                    <i class="fa fa-camera"></i> Fotos
+                  </a>
+
+                  <button type="button" class="btn btn-default btn-xs open-modal-btn"
+                          th:data-id="${veiculo.id}"
+                          th:data-montadoranome="${veiculo.modelo?.montadora?.nome}"
+                          th:data-modelonome="${veiculo.modelo?.nome}"
+                          data-toggle="tooltip" data-placement="top" title="Marcar como Vendido">
+                    <i class="fa fa-file-text-o"></i> Vender
+                  </button>
+
+                  <form th:action="@{/private/cadastro/veiculos/excluir}" method="post" style="display:inline;" onsubmit="return confirm('Tem certeza que deseja excluir este veículo?');">
+                    <input type="hidden" name="id" th:value="${veiculo.id}" />
+                    <button type="submit" class="btn btn-danger btn-xs" title="Excluir">
+                      <i class="fa fa-trash-o"></i> Excluir
+                    </button>
+                  </form>
+
+
+                  <!--
+                  <form th:action="@{/private/cadastro/veiculos/alterar-status}" method="post" style="display:inline;">
+                    <input type="hidden" name="id" th:value="${veiculo.id}" />
+                    <input type="hidden" name="forSale" th:value="${!veiculo.forSale}" />
+                    <button type="submit"
+                            th:classappend="${veiculo.forSale} ? 'btn-default' : 'btn-success'"
+                            class="btn btn-xs"
+                            th:title="${veiculo.forSale} ? 'Marcar como Vendido' : 'Marcar como À Venda'"
+                            th:text="${veiculo.forSale} ? 'Vender' : 'Disponibilizar'">
+                    </button>
+                  </form>
+                  -->
+                </td>
+              </tr>
+              <tr th:if="${#lists.isEmpty(veiculos)}">
+                  <td colspan="13" class="text-center">Nenhum veículo encontrado.</td>
+              </tr>
+              </tbody>
+            </table>
+            </div>
+
+
+
+
+              <div th:if="${page.totalPages > 0}" class="text-center">
+                  <ul class="pagination">
+                      <li th:class="${page.first ? 'disabled' : ''}">
+                          <a th:href="@{/private/cadastro/veiculos(page=${0}, size=${size}, sort=${sort}, id=${filtroId}, tipoVeiculoId=${filtroTipoVeiculoId}, montadoraId=${filtroMontadoraId}, modeloId=${filtroModeloId})}">
+                              &laquo;
+                          </a>
+                      </li>
+                      <!--
+                      <li th:class="${page.first ? 'disabled' : ''}">
+                          <a th:href="@{/private/cadastro/veiculos(page=${page.number - 1}, size=${size}, sort=${sort}, id=${filtroId}, tipoVeiculoId=${filtroTipoVeiculoId}, montadoraId=${filtroMontadoraId}, modeloId=${filtroModeloId})}">
+                              &lsaquo;
+                          </a>
+                      </li>
+                      -->
+                      <li th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}" th:class="${page.number == i ? 'active' : ''}">
+                          <a th:href="@{/private/cadastro/veiculos(page=${i}, size=${size}, sort=${sort}, id=${filtroId}, tipoVeiculoId=${filtroTipoVeiculoId}, montadoraId=${filtroMontadoraId}, modeloId=${filtroModeloId})}" th:text="${i + 1}"></a>
+                      </li>
+                      <!--
+                      <li th:class="${page.last ? 'disabled' : ''}">
+                          <a th:href="@{/private/cadastro/veiculos(page=${page.number + 1}, size=${size}, sort=${sort}, id=${filtroId}, tipoVeiculoId=${filtroTipoVeiculoId}, montadoraId=${filtroMontadoraId}, modeloId=${filtroModeloId})}">
+                              &rsaquo;
+                          </a>
+                      </li>
+                      -->
+                      <li th:class="${page.last ? 'disabled' : ''}">
+                          <a th:href="@{/private/cadastro/veiculos(page=${page.totalPages - 1}, size=${size}, sort=${sort}, id=${filtroId}, tipoVeiculoId=${filtroTipoVeiculoId}, montadoraId=${filtroMontadoraId}, modeloId=${filtroModeloId})}">
+                              &raquo;
+                          </a>
+                      </li>
+                  </ul>
+              </div>
+          </div>
+        </div>
+
+
+      </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div th:replace="~{fragments/privateFooter :: footerFragment}"></div>
+</div>
+
+
+
+<div th:replace="~{fragments/privateScriptsJS :: privateScriptsJs}"></div>
+
+
+<div class="modal fade" id="genericModal" tabindex="-1" role="dialog" aria-labelledby="genericModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+
+    <form id="veiculoVendaForm" th:action="@{/private/cadastro/veiculos/alterar-status}" method="post">
+      <input type="hidden" id="modalVeiculoId" name="id" th:value="${veiculo.id}" />
+      <input type="hidden" name="forSale" value="false" />
+
+    <!--
+    <form id="veiculoVendaForm" th:action="@{/private/cadastro/veiculos/alterar-status}" th:object="${veiculo}" method="post" style="display:inline;">
+
+      <input type="hidden" name="id" id="modalVeiculoId" th:value="${veiculo.id}" />
+      <input type="hidden" name="forSale" th:value="${!veiculo.forSale}" />
+    -->
+
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="genericModalLabel">
+            ID: <span id="modalVeiculoIdDisplay"></span> | <span id="modalVeiculoMontadoraDisplay"></span> <span id="modalVeiculoModeloDisplay"></span>
+          </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="dataVendaInputModal">Data da Venda</label>
+                <input type="date" id="dataVendaInputModal" name="dataVenda" class="form-control" required>
+<!--                <input type="date" id="dataVendaInputModal" name="dataVenda" class="form-control" th:field="${veiculo.dataVenda}" required>-->
+
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="precoVendidoModal">Preço Vendido</label>
+                <input type="number" id="precoVendidoModal" name="precoVendido" class="form-control" step="0.01" min="0" required >
+<!--                <input type="number" id="precoVendidoModal" name="precoVendido" class="form-control" th:field="${veiculo.precoVendido}" step="0.01" min="0" required >-->
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" id="submitModalFormButton">Registrar Venda</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+
+<script th:inline="javascript">
+  /*<![CDATA[*/
+  $(document).ready(function() {
+      var $veiculoForm = $('#veiculoForm');
+      var $formTitle = $('#formTitle');
+      var $idInput = $('#id');
+      var $tipoVeiculoSelect = $('#tipoVeiculoSelect');
+      var $montadoraSelect = $('#montadoraSelect');
+      var $modeloSelect = $('#modeloSelect');
+      var $anoModeloInput = $('#anoModelo');
+      var $anoFabricacaoInput = $('#anoFabricacao');
+      var $corInput = $('#cor');
+
+      var $informacoesAdicionaisInput = $('#informacoesAdicionais');
+
+      var $motorInput = $('#motor');
+      var $temArCondicionadoCheckbox = $('input[name="temArCondicionado"]');
+      var $temVidroEletricoCheckbox = $('input[name="temVidroEletrico"]');
+      var $temTravasEletricasCheckbox = $('input[name="temTravasEletricas"]');
+
+      var $temFreioAbsCheckbox = $('input[name="temFreioAbs"]');
+      var $temAirBagCheckbox = $('input[name="temAirBag"]');
+      var $temCentralMultimidiaCheckbox = $('input[name="temCentralMultimidia"]');
+      var $temComandosVolanteCheckbox = $('input[name="temComandosVolante"]');
+      var $temAlarmeCheckbox = $('input[name="temAlarme"]');
+      var $temLimpadorTraseiroCheckbox = $('input[name="temLimpadorTraseiro"]');
+      var $temDesembacadorTraseiroCheckbox = $('input[name="temDesembacadorTraseiro"]');
+      var $temCameraReCheckbox = $('input[name="temCameraRe"]');
+      var $temSensorEstacionamentoCheckbox = $('input[name="temSensorEstacionamento"]');
+      var $temCambioAutomaticoCheckbox = $('input[name="temCambioAutomatico"]');
+
+      var $tipoDirecaoSelect = $('#tipoDirecao');
+      var $finalPlacaInput = $('#finalPlaca');
+      var $carroceriaSelect = $('#carroceria');
+      var $quilometragemInput = $('#quilometragem');
+      var $tipoCombustivelSelect = $('#tipoCombustivel');
+      var $forSaleTrueRadio = $('#forSaleTrue');
+      var $forSaleFalseRadio = $('#forSaleFalse');
+      var $dataVendaGroup = $('#dataVendaGroup');
+      var $dataVendaInput = $('#dataVendaInput');
+      var $precoAnunciadoInput = $('#precoAnunciado');
+      var $precoVendidoInput = $('#precoVendido');
+      var $submitButton = $('#submitButton');
+      var $cancelButton = $('#cancelButton');
+
+      // NOVAS VARIÁVEIS PARA OS SELECTS DE PAÍS, ESTADO, CIDADE
+      var $paisSelect = $('#paisSelect');
+      var $estadoSelect = $('#estadoSelect');
+      var $cidadeSelect = $('#cidadeSelect');
+
+      // Valores iniciais passados pelo Thymeleaf para edição ou erro de validação
+      var initialMontadoraId = /*[[${initialMontadoraId}]]*/ null;
+      var initialModeloId = /*[[${initialModeloId}]]*/ null;
+      var initialTipoVeiculoId = /*[[${initialTipoVeiculoId}]]*/ null;
+      var initialForSale = /*[[${initialForSale}]]*/ true; // Default true se não especificado
+      var veiculoIdForEdit = /*[[${veiculo.id}]]*/ null; // Usar veiculo.id diretamente do modelo para verificar se está em edição
+
+      var initialPaisId = /*[[${initialPaisId}]]*/ null;
+      var initialEstadoId = /*[[${initialEstadoId}]]*/ null;
+      var initialCidadeId = /*[[${initialCidadeId}]]*/ null;
+
+      // Valores iniciais para os opcionais, para repopular após erros de validação
+      var initialTemArCondicionado = /*[[${veiculo.temArCondicionado}]]*/ false;
+      var initialTemVidroEletrico = /*[[${veiculo.temVidroEletrico}]]*/ false;
+      var initialTemTravasEletricas = /*[[${veiculo.temTravasEletricas}]]*/ false;
+
+      var initialTemFreioAbs = /*[[${veiculo.temFreioAbs}]]*/ false;
+      var initialTemAirBag = /*[[${veiculo.temAirBag}]]*/ false;
+      var initialTemCentralMultimidia = /*[[${veiculo.temCentralMultimidia}]]*/ false;
+      var initialTemComandosVolante = /*[[${veiculo.temComandosVolante}]]*/ false;
+      var initialTemAlarme = /*[[${veiculo.temAlarme}]]*/ false;
+      var initialTemLimpadorTraseiro = /*[[${veiculo.temLimpadorTraseiro}]]*/ false;
+      var initialTemDesembacadorTraseiro = /*[[${veiculo.temDesembacadorTraseiro}]]*/ false;
+      var initialTemCameraRe = /*[[${veiculo.temCameraRe}]]*/ false;
+      var initialTemSensorEstacionamento = /*[[${veiculo.temSensorEstacionamento}]]*/ false;
+      var initialTemCambioAutomatico = /*[[${veiculo.temCambioAutomatico}]]*/ false;
+
+      var token = $("meta[name='_csrf']").attr("content");
+      var header = $("meta[name='_csrf_header']").attr("content");
+
+      // Função para resetar o formulário
+      function resetForm() {
+          $veiculoForm[0].reset(); // Reseta todos os campos do formulário
+          $idInput.val('');
+          $formTitle.text('Cadastrar Novo Veículo');
+          //$submitButton.text('Cadastrar Veículo').removeClass('btn-info').addClass('btn-primary'); // Restaurar texto e classes
+          $cancelButton.hide();
+          $dataVendaGroup.addClass('hidden'); // Esconde o campo dataVenda por padrão
+          $dataVendaInput.prop('required', false); // Remove o 'required'
+          $precoVendidoInput.prop('required', false); // Remove o 'required'
+          $modeloSelect.empty().append('<option value="">Selecione um Modelo</option>'); // Limpa e adiciona opção padrão
+
+          // LIMPAR NOVOS SELECTS
+          $estadoSelect.empty().append('<option value="">Selecione um Estado</option>');
+          $cidadeSelect.empty().append('<option value="">Selecione uma Cidade</option>');
+          // FIM LIMPAR
+
+          // Garante que o rádio "À Venda" está selecionado ao resetar
+          $forSaleTrueRadio.prop('checked', true);
+          $forSaleFalseRadio.prop('checked', false);
+          // Garante que os checkboxes de opcionais estão desmarcados ao resetar
+          $temArCondicionadoCheckbox.prop('checked', false);
+          $temVidroEletricoCheckbox.prop('checked', false);
+          $temTravasEletricasCheckbox.prop('checked', false);
+
+          $temFreioAbsCheckbox.prop('checked', false);
+          $temAirBagCheckbox.prop('checked', false);
+          $temCentralMultimidiaCheckbox.prop('checked', false);
+          $temComandosVolanteCheckbox.prop('checked', false);
+          $temAlarmeCheckbox.prop('checked', false);
+          $temLimpadorTraseiroCheckbox.prop('checked', false);
+          $temDesembacadorTraseiroCheckbox.prop('checked', false);
+          $temCameraReCheckbox.prop('checked', false);
+          $temSensorEstacionamentoCheckbox.prop('checked', false);
+          $temCambioAutomaticoCheckbox.prop('checked', false);
+      }
+
+
+      // Função para popular o select de modelos via AJAX
+      function populateModeloSelect(montadoraId, currentModeloId = null) {
+          $modeloSelect.empty().append('<option value="">Carregando Modelos...</option>'); // Limpa e mostra mensagem de carregamento
+          if (montadoraId) {
+              $.ajax({
+                  url: '/private/cadastro/modelos/por-montadora/' + montadoraId,
+                  type: 'GET',
+                  beforeSend: function(xhr) {
+                      xhr.setRequestHeader(header, token);
+                  },
+                  success: function(modelos) {
+                      $modeloSelect.empty().append('<option value="">Selecione um Modelo</option>');
+                      $.each(modelos, function(i, modelo) {
+                          $modeloSelect.append($('<option>', {
+                              value: modelo.id,
+                              text: modelo.nome
+                          }));
+                      });
+                      if (currentModeloId) {
+                          $modeloSelect.val(currentModeloId);
+                      }
+                  },
+                  error: function(xhr, status, error) {
+                      console.error("Erro ao carregar modelos: " + error);
+                      $modeloSelect.empty().append('<option value="">Erro ao carregar Modelos</option>');
+                      toastr.error("Erro ao carregar modelos para a montadora selecionada.");
+                  }
+              });
+          } else {
+              $modeloSelect.empty().append('<option value="">Selecione uma Montadora Primeiro</option>');
+          }
+      }
+
+      // NOVA FUNÇÃO PARA POPULAR ESTADOS
+      function populateEstadoSelect(paisId, currentEstadoId = null, currentCidadeId = null) {
+          $estadoSelect.empty().append('<option value="">Carregando Estados...</option>');
+          $cidadeSelect.empty().append('<option value="">Selecione uma Cidade</option>'); // Limpa cidades ao mudar estado
+
+          if (paisId) {
+              $.ajax({
+                  url: '/private/cadastro/veiculos/estados-por-pais/' + paisId,
+                  type: 'GET',
+                  beforeSend: function(xhr) {
+                      xhr.setRequestHeader(header, token);
+                  },
+                  success: function(estados) {
+                      $estadoSelect.empty().append('<option value="">Selecione um Estado</option>');
+                      $.each(estados, function(i, estado) {
+                          $estadoSelect.append($('<option>', {
+                              value: estado.id,
+                              text: estado.nome + ' (' + estado.uf + ')'
+                          }));
+                      });
+                      if (currentEstadoId) {
+                          $estadoSelect.val(currentEstadoId);
+                          // Se há um estado selecionado e uma cidade inicial, popule as cidades
+                          if (currentCidadeId) {
+                              populateCidadeSelect(currentEstadoId, currentCidadeId);
+                          }
+                      }
+                  },
+                  error: function(xhr, status, error) {
+                      console.error("Erro ao carregar estados: " + error);
+                      $estadoSelect.empty().append('<option value="">Erro ao carregar Estados</option>');
+                      toastr.error("Erro ao carregar estados para o país selecionado.");
+                  }
+              });
+          } else {
+              $estadoSelect.empty().append('<option value="">Selecione um País Primeiro</option>');
+          }
+      }
+
+      // NOVA FUNÇÃO PARA POPULAR CIDADES
+      function populateCidadeSelect(estadoId, currentCidadeId = null) {
+          $cidadeSelect.empty().append('<option value="">Carregando Cidades...</option>');
+          if (estadoId) {
+              $.ajax({
+                  url: '/private/cadastro/veiculos/cidades-por-estado/' + estadoId,
+                  type: 'GET',
+                  beforeSend: function(xhr) {
+                      xhr.setRequestHeader(header, token);
+                  },
+                  success: function(cidades) {
+                      $cidadeSelect.empty().append('<option value="">Selecione uma Cidade</option>');
+                      $.each(cidades, function(i, cidade) {
+                          $cidadeSelect.append($('<option>', {
+                              value: cidade.id,
+                              text: cidade.nome
+                          }));
+                      });
+                      if (currentCidadeId) {
+                          $cidadeSelect.val(currentCidadeId);
+                      }
+                  },
+                  error: function(xhr, status, error) {
+                      console.error("Erro ao carregar cidades: " + error);
+                      $cidadeSelect.empty().append('<option value="">Erro ao carregar Cidades</option>');
+                      toastr.error("Erro ao carregar cidades para o estado selecionado.");
+                  }
+              });
+          } else {
+              $cidadeSelect.empty().append('<option value="">Selecione um Estado Primeiro</option>');
+          }
+      }
+      // FIM NOVAS FUNÇÕES
+
+      // Função para controlar a visibilidade dos campos de venda
+      function toggleDataVendaField() {
+          if ($forSaleFalseRadio.is(':checked')) { // Se o veículo for "Vendido"
+              $dataVendaGroup.removeClass('hidden');
+              $dataVendaInput.prop('required', true); // Torna dataVenda obrigatório
+              $precoVendidoInput.prop('required', true); // Torna precoVendido obrigatório
+          } else { // Se o veículo for "À Venda"
+              $dataVendaGroup.addClass('hidden');
+              $dataVendaInput.val(''); // Limpa o valor
+              $dataVendaInput.prop('required', false); // Remove o 'required'
+              $precoVendidoInput.val(''); // Limpa o valor
+              $precoVendidoInput.prop('required', false); // Remove o 'required'
+          }
+      }
+
+      // Evento de mudança para o select de Montadoras
+      $montadoraSelect.on('change', function() {
+          var montadoraId = $(this).val();
+          populateModeloSelect(montadoraId);
+      });
+
+      // NOVOS EVENT LISTENERS
+      $paisSelect.on('change', function() {
+          populateEstadoSelect($(this).val());
+      });
+
+      $estadoSelect.on('change', function() {
+          populateCidadeSelect($(this).val());
+      });
+      // FIM NOVOS EVENT LISTENERS
+
+      // Evento de mudança para os radio buttons de forSale
+      $('input[name="forSale"]').on('change', function() {
+          toggleDataVendaField();
+      });
+
+      // Lógica de inicialização do formulário (para edição ou repopulação após erro)
+      if (veiculoIdForEdit || /*[[${messageType == 'error' && veiculo.id != null}]]*/ false) { // Verifica se está em modo de edição ou houve erro
+          $formTitle.text('Editar Veículo (ID: ' + (veiculoIdForEdit || $idInput.val()) + ')');
+          //$submitButton.text('Atualizar Veículo').removeClass('btn-primary').addClass('btn-info'); // Corrigido para setar o texto do botão
+
+          $cancelButton.show();
+
+          // Repopular Montadora e Modelo
+          if (initialMontadoraId) {
+              // Ao carregar a página para edição, primeiro seleciona a montadora
+              $montadoraSelect.val(initialMontadoraId);
+              // Depois, carrega os modelos para essa montadora e tenta selecionar o modelo inicial
+              populateModeloSelect(initialMontadoraId, initialModeloId);
+          }
+          // Repopular Tipo de Veículo
+          if (initialTipoVeiculoId) {
+              $tipoVeiculoSelect.val(initialTipoVeiculoId);
+          }
+
+          // CORREÇÃO AQUI: Carrega País, Estado e Cidade ao carregar a página em modo de edição
+          // As variáveis initialPaisId, initialEstadoId, initialCidadeId já são definidas pelo Thymeleaf
+          if (initialPaisId) {
+              $paisSelect.val(initialPaisId);
+              populateEstadoSelect(initialPaisId, initialEstadoId, initialCidadeId);
+          }
+
+          // Repopular o estado do radio button 'forSale'
+          if (initialForSale !== null) { // Verifica se initialForSale foi passado
+              if (initialForSale) {
+                  $forSaleTrueRadio.prop('checked', true);
+              } else {
+                  $forSaleFalseRadio.prop('checked', true);
+              }
+          }
+          toggleDataVendaField(); // Re-avalia a visibilidade dos campos de venda
+
+          // NOVO: Repopular os checkboxes dos opcionais
+          $temArCondicionadoCheckbox.prop('checked', initialTemArCondicionado);
+          $temVidroEletricoCheckbox.prop('checked', initialTemVidroEletrico);
+          $temTravasEletricasCheckbox.prop('checked', initialTemTravasEletricas);
+
+          $temFreioAbsCheckbox.prop('checked', initialTemFreioAbs);
+          $temAirBagCheckbox.prop('checked', initialTemAirBag);
+          $temCentralMultimidiaCheckbox.prop('checked', initialTemCentralMultimidia);
+          $temComandosVolanteCheckbox.prop('checked', initialTemComandosVolante);
+          $temAlarmeCheckbox.prop('checked', initialTemAlarme);
+          $temLimpadorTraseiroCheckbox.prop('checked', initialTemLimpadorTraseiro);
+          $temDesembacadorTraseiroCheckbox.prop('checked', initialTemDesembacadorTraseiro);
+          $temDesembacadorTraseiroCheckbox.prop('checked', initialTemCameraRe);
+          $temSensorEstacionamentoCheckbox.prop('checked', initialTemSensorEstacionamento);
+          $temCambioAutomaticoCheckbox.prop('checked', initialTemCambioAutomatico);
+
+
+      } else {
+          // Garante que o campo de data de venda está escondido e não é obrigatório ao carregar para um NOVO veículo
+          $dataVendaGroup.addClass('hidden');
+          $dataVendaInput.prop('required', false);
+          $precoVendidoInput.prop('required', false);
+          // Garante que "À Venda" está selecionado para um novo veículo
+          $forSaleTrueRadio.prop('checked', true);
+          // Garante que os checkboxes estão desmarcados para um novo veículo
+          $temArCondicionadoCheckbox.prop('checked', false);
+          $temVidroEletricoCheckbox.prop('checked', false);
+          $temTravasEletricasCheckbox.prop('checked', false);
+
+          $temFreioAbsCheckbox.prop('checked', false);
+          $temAirBagCheckbox.prop('checked', false);
+          $temCentralMultimidiaCheckbox.prop('checked', false);
+          $temComandosVolanteCheckbox.prop('checked', false);
+          $temAlarmeCheckbox.prop('checked', false);
+          $temLimpadorTraseiroCheckbox.prop('checked', false);
+          $temDesembacadorTraseiroCheckbox.prop('checked', false);
+          $temCameraReCheckbox.prop('checked', false);
+          $temSensorEstacionamentoCheckbox.prop('checked', false);
+          $temCambioAutomaticoCheckbox.prop('checked', false);
+      }
+
+      // Lidar com o botão Cancelar Edição
+      $cancelButton.on('click', function() {
+          resetForm();
+      });
+
+
+        // NOVO: Botão para abrir o modal genérico
+        $('.open-modal-btn').on('click', function() {
+            var veiculoId = $(this).data('id');
+            var veiculoMontadora = $(this).data('montadoranome'); // Captura o nome da montadora
+            var veiculoModelo = $(this).data('modelonome');     // Captura o nome do modelo
+            var veiculoDataVenda = $(this).data('datavenda');
+            var veiculoPrecoVendido = $(this).data('precovendido');
+
+            // === Ponto de Depuração ===
+            console.log("Abrindo Modal para Veículo ID:", veiculoId);
+            console.log("Montadora:", veiculoMontadora, "Modelo:", veiculoModelo);
+            console.log("Data Venda (do botão):", veiculoDataVenda, "Preço Vendido (do botão):", veiculoPrecoVendido);
+            // =========================
+
+            $('#modalVeiculoIdDisplay').text(veiculoId); // Exibe o ID do veículo no título do modal
+            $('#modalVeiculoMontadoraDisplay').text(veiculoMontadora); // Exibe o nome da montadora
+            $('#modalVeiculoModeloDisplay').text(veiculoModelo);     // Exibe o nome do modelo
+
+            // Preenche o campo hidden 'id' do formulário do modal
+            $('#modalVeiculoId').val(veiculoId);
+            // Preenche os campos de data e preço do formulário do modal
+            $('#dataVendaInputModal').val(veiculoDataVenda);
+            $('#precoVendidoModal').val(veiculoPrecoVendido);
+
+
+            // === Ponto de Depuração 2: Após preencher o campo hidden do modal ===
+            console.log("Valor do campo hidden #modalVeiculoId APÓS preencher:", $('#modalVeiculoId').val());
+            // =========================
+
+            $('#genericModal').modal('show');
+            //toastr.info('Modal de formulário aberto para o Veículo ID: ' + veiculoId);
+        });
+
+
+        // NOVO: Submissão do formulário do modal via AJAX
+        $('#submitModalFormButton').on('click', function() {
+            var veiculoId = $('#modalVeiculoId').val();
+            var dataVenda = $('#dataVendaInputModal').val();
+            var precoVendido = $('#precoVendidoModal').val();
+
+            // Validação simples
+            if (!dataVenda || !precoVendido) {
+                toastr.error('Por favor, preencha a data e o preço da venda no modal.');
+                return;
+            }
+
+            // Prepara os dados a serem enviados
+            var formData = {
+                id: veiculoId,
+                dataVenda: dataVenda,
+                precoVendido: precoVendido,
+                forSale: false // Indica que o veículo foi vendido/não está mais disponível
+            };
+
+            // === Ponto de Depuração 3: Dados enviados via AJAX ANTES da chamada ===
+            console.log("Dados enviados via AJAX (final) -> id:", formData.id);
+            console.log("Dados enviados via AJAX (final):", formData);
+            // ============================================
+
+
+            $.ajax({
+                url: $('#veiculoVendaForm').attr('action'), // Pega a URL do action do form
+                type: 'POST',
+                data: formData,
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader(header, token);
+                },
+                success: function(response) {
+                    toastr.success(response.message || 'Status do veículo atualizado com sucesso!');
+                    $('#genericModal').modal('hide');
+                    setTimeout(function() {
+                        location.reload(); // Recarrega a página para refletir as mudanças
+                    }, 1000);
+                },
+                error: function(xhr, status, error) {
+                    var errorMessage = 'Erro ao atualizar status do veículo.';
+                    try {
+                        var responseJson = JSON.parse(xhr.responseText);
+                        errorMessage = responseJson.message || errorMessage;
+                    } catch (e) {
+                        // ignore parsing error, use default message
+                    }
+                    toastr.error(errorMessage);
+                    console.error("Erro ao atualizar status do veículo:", status, error, xhr.responseText);
+                }
+            });
+        });
+
+
+      // Lidar com o botão de edição na tabela
+      $('.btn-edit').on('click', function() {
+          resetForm(); // Limpa o formulário antes de preencher
+
+          var data = $(this).data(); // Pega todos os atributos data-*
+          $formTitle.text('Editar Veículo (ID: ' + data.id + ')');
+          $idInput.val(data.id);
+
+          $tipoVeiculoSelect.val(data.tipoveiculoId);
+          $montadoraSelect.val(data.montadoraId);
+
+          // Armazena o ID do modelo para ser selecionado após o carregamento via AJAX
+          var currentModeloId = data.modeloId;
+
+          // Dispara a mudança na montadora para carregar os modelos e, em seguida, seleciona o modelo correto
+          if (data.montadoraId) {
+              populateModeloSelect(data.montadoraId, currentModeloId);
+          }
+
+          $anoModeloInput.val(data.anoModelo);
+          $anoFabricacaoInput.val(data.anoFabricacao);
+          $corInput.val(data.cor);
+
+          $informacoesAdicionaisInput.val(data.informacoesAdicionais);
+
+          $motorInput.val(data.motor);
+          $quilometragemInput.val(data.quilometragem);
+          $finalPlacaInput.val(data.finalPlaca);
+
+          // CORREÇÃO AQUI: Convertendo strings "true"/"false" para booleanos reais
+          $temArCondicionadoCheckbox.prop('checked', String(data.temAr) === 'true');
+          $temVidroEletricoCheckbox.prop('checked', String(data.temVidro) === 'true');
+          $temTravasEletricasCheckbox.prop('checked', String(data.temTravas) === 'true');
+
+          $temFreioAbsCheckbox.prop('checked', String(data.temFreioabs) === 'true');
+          $temAirBagCheckbox.prop('checked', String(data.temAirbag) === 'true');
+          $temCentralMultimidiaCheckbox.prop('checked', String(data.temCentralmultimidia) === 'true');
+          $temComandosVolanteCheckbox.prop('checked', String(data.temComandosvolante) === 'true');
+          $temAlarmeCheckbox.prop('checked', String(data.temAlarme) === 'true');
+          $temLimpadorTraseiroCheckbox.prop('checked', String(data.temLimpadortraseiro) === 'true');
+          $temDesembacadorTraseiroCheckbox.prop('checked', String(data.temDesembacadortraseiro) === 'true');
+          $temCameraReCheckbox.prop('checked', String(data.temCamerare) === 'true');
+          $temSensorEstacionamentoCheckbox.prop('checked', String(data.temSensorestacionamento) === 'true');
+          $temCambioAutomaticoCheckbox.prop('checked', String(data.temCambioautomatico) === 'true');
+
+          // Selects de Enum
+          $tipoDirecaoSelect.val(data.tipoDirecao);
+          $carroceriaSelect.val(data.carroceria);
+          $tipoCombustivelSelect.val(data.tipoCombustivel);
+
+          // CORREÇÃO AQUI: Carrega País, Estado e Cidade ao editar - use 'data.' para acessar os atributos
+          if (data.paisId) {
+              $paisSelect.val(data.paisId);
+              populateEstadoSelect(data.paisId, data.estadoId, data.cidadeId);
+          } else {
+              // Se não houver paisId, limpa os selects de estado e cidade
+              $estadoSelect.empty().append('<option value="">Selecione um Estado</option>');
+              $cidadeSelect.empty().append('<option value="">Selecione uma Cidade</option>');
+          }
+
+          // Radio buttons forSale
+          if (String(data.forSale) === 'true') { // Comparar com string 'true'
+              $forSaleTrueRadio.prop('checked', true);
+          } else {
+              $forSaleFalseRadio.prop('checked', true);
+          }
+          toggleDataVendaField(); // Atualiza a visibilidade do campo de data/preço de venda
+
+          // Campos de Preço e Data
+          $precoAnunciadoInput.val(data.precoAnunciado);
+          if (data.dataVenda) {
+              $dataVendaInput.val(data.dataVenda); // Data vem como string 'YYYY-MM-DD'
+          } else {
+              $dataVendaInput.val('');
+          }
+          $precoVendidoInput.val(data.precoVendido);
+
+          //$submitButton.text('Atualizar Veículo').removeClass('btn-primary').addClass('btn-info'); // Setar texto do botão de submissão
+          $cancelButton.show();
+
+          // Scrolla para o topo para mostrar o formulário
+          $('html, body').animate({
+              scrollTop: $veiculoForm.offset().top - 100
+          }, 500);
+      });
+
+      // Exibição de mensagens Toastr
+      var messageType = /*[[${messageType}]]*/ null;
+      var message = /*[[${message}]]*/ null;
+
+      if (message && messageType) {
+          if (typeof toastr !== 'undefined') {
+              if (messageType === 'success') {
+                  toastr.success(message);
+              } else if (messageType === 'error') {
+                  toastr.error(message);
+              } else if (messageType === 'warning') {
+                  toastr.warning(message);
+              }
+          } else {
+              console.log(messageType + ": " + message);
+          }
+      }
+
+
+      // Lógica para o filtro de modelos com base na marca
+        var montadoraSelect = $('#filtroMontadoraId');
+        var modeloSelect = $('#filtroModeloId');
+
+        // Pré-selecionar valores do filtro se existirem
+        var initialMontadoraId = [[${filtroMontadoraId}]];
+        var initialModeloId = [[${filtroModeloId}]];
+
+        // Função para carregar os modelos via AJAX
+        function loadModelos(montadoraId, callback) {
+
+            // Limpa o select de modelos e adiciona a opção padrão
+            modeloSelect.empty().append('<option value="">Todos</option>');
+
+            var url;
+            if (montadoraId) {
+                // Se um ID de montadora for selecionado, busca os modelos daquela montadora
+                url = '/private/cadastro/modelos/por-montadora/' + montadoraId;
+            } else {
+                // Se "Todos" for selecionado, busca todos os modelos
+                url = '/private/cadastro/modelos/por-montadora/todos';
+            }
+
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function(modelos) {
+                    if (modelos.length > 0) {
+                        $.each(modelos, function(index, modelo) {
+                            modeloSelect.append('<option value="' + modelo.id + '">' + modelo.nome + '</option>');
+                        });
+                    }
+                    if ($.fn.niceSelect) {
+                        modeloSelect.niceSelect('update');
+                    }
+                    if (callback) callback();
+                },
+                error: function(error) {
+                    console.error('Erro ao buscar modelos:', error);
+                    if (callback) callback();
+                }
+            });
+
+
+            /*
+            if (montadoraId) {
+                $.ajax({
+                    url: '/private/cadastro/modelos/por-montadora/' + montadoraId,
+                    type: 'GET',
+                    success: function(modelos) {
+                        if (modelos.length > 0) {
+                            $.each(modelos, function(index, modelo) {
+                                modeloSelect.append('<option value="' + modelo.id + '">' + modelo.nome + '</option>');
+                            });
+                        }
+                        // Se o nice-select estiver sendo usado, atualiza-o
+                        if ($.fn.niceSelect) {
+                            modeloSelect.niceSelect('update');
+                        }
+                        if (callback) callback();
+                    },
+                    error: function(error) {
+                        console.error('Erro ao buscar modelos:', error);
+                        if (callback) callback();
+                    }
+                });
+            } else {
+                // Se nenhuma montadora for selecionada, apenas atualiza o nice-select
+                if ($.fn.niceSelect) {
+                    modeloSelect.niceSelect('update');
+                }
+                if (callback) callback();
+            }
+            */
+
+        }
+
+        // Lógica para pré-seleção na inicialização da página
+        if (initialMontadoraId) {
+            montadoraSelect.val(initialMontadoraId);
+            loadModelos(initialMontadoraId, function() {
+                if (initialModeloId) {
+                    modeloSelect.val(initialModeloId);
+                }
+            });
+        }
+
+        // Evento de mudança na seleção de montadora
+        montadoraSelect.on('change', function() {
+            var montadoraId = $(this).val();
+            loadModelos(montadoraId);
+        });
+
+        // Chamada inicial para carregar modelos, caso a montadora já esteja pré-selecionada no carregamento da página
+        if (initialMontadoraId) {
+            montadoraSelect.trigger('change');
+        }
+  });
+  /*]]>*/
+</script>
+
+</body>
+</html>

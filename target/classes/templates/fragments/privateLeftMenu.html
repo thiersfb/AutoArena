@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+
+<div th:fragment="leftMenuFragment">
+
+    <!-- LEFT SIDEBAR -->
+    <div id="sidebar-nav" class="sidebar">
+        <div class="sidebar-scroll">
+            <nav>
+                <ul class="nav">
+                    <!--<li><a href="index.html" class="active"><i class="lnr lnr-home"></i> <span>Dashboard</span></a></li>-->
+                    <li><a th:href="@{/private/dashboard}" th:classappend="${currentUri  == '/private/dashboard'} ? 'active' : ''">
+                        <i class="lnr lnr-home"></i> <span>Início</span></a>
+                    </li>
+
+                    <li sec:authorize="hasAnyRole('ADMIN', 'CADASTRAR_LOCAIS', 'CADASTRAR_DADOS_VEICULO', 'CADASTRAR_VEICULO_VENDA')">
+                        <a href="#subCadastros" data-toggle="collapse" class="collapsed"><i class="lnr lnr-database"></i> <span>Cadastros</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+                        <div id="subCadastros" class="collapse ">
+                            <ul class="nav">
+                                <li sec:authorize="hasAnyRole('ADMIN', 'CADASTRAR_LOCAIS')"><a th:href="@{/private/cadastro/pais}" class="">País</a></li>
+                                <li sec:authorize="hasAnyRole('ADMIN', 'CADASTRAR_LOCAIS')"><a th:href="@{/private/cadastro/estado}" class="">Estados</a></li>
+                                <li sec:authorize="hasAnyRole('ADMIN', 'CADASTRAR_LOCAIS')"><a th:href="@{/private/cadastro/cidade}"  class="">Cidades</a></li>
+                                <li sec:authorize="hasAnyRole('ADMIN', 'CADASTRAR_DADOS_VEICULO')"><a th:href="@{/private/cadastro/tipos_veiculo}" class="">Tipos de Veículos</a></li>
+                                <li sec:authorize="hasAnyRole('ADMIN', 'CADASTRAR_DADOS_VEICULO')"><a th:href="@{/private/cadastro/montadoras}" class="">Montadoras</a></li>
+                                <li sec:authorize="hasAnyRole('ADMIN', 'CADASTRAR_DADOS_VEICULO')"><a th:href="@{/private/cadastro/modelos}" class="">Modelos</a></li>
+                                <li sec:authorize="hasAnyRole('ADMIN', 'CADASTRAR_VEICULO_VENDA')"><a th:href="@{/private/cadastro/veiculos}" class="">Veículos à Venda</a></li>
+                            </ul>
+                        </div>
+                    </li>
+
+
+                    <!-- -->
+                    <li>
+                        <a href="#subRelatorios" data-toggle="collapse" class="collapsed">
+                            <i class="lnr lnr-chart-bars"></i>
+                            <span>Relatórios</span>
+                            <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+                        <div id="subRelatorios" class="collapse ">
+                            <ul class="nav">
+                                <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/private/relatorios}">Veículos por Montadora</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <!-- -->
+
+                    <li sec:authorize="hasAnyRole('ADMIN', 'VEICULOS_VENDIDOS')">
+                        <a th:href="@{/private/vendidos}" th:classappend="${currentUri  == '/private/vendidos'} ? 'active' : ''">
+                            <i class="lnr lnr-history"></i> <span>Veículos Vendidos</span></a>
+                    </li>
+
+
+                    <!--
+                    <li>
+                        <a href="#subPaginas" data-toggle="collapse" class="collapsed"><i class="lnr lnr-code"></i> <span>Páginas</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+                        <div id="subPaginas" class="collapse ">
+                            <ul class="nav">
+                                <li sec:authorize="hasRole('ADMIN')"><a href="#">Empresa</a></li>
+                                <li sec:authorize="hasRole('ADMIN')"><a href="#">Contato</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    -->
+
+                    <!--
+                    <li sec:authorize="hasRole('ADMIN')">
+                        <a href="#" th:href="@{/private/relatorios}" th:classappend="${currentUri  == '/private/relatorios'} ? 'active' : ''">
+                            <i class="lnr lnr-chart-bars"></i> <span>Relatórios</span></a>
+                    </li>
+                    -->
+
+                    <li>
+                        <a href="#subUsuarios" data-toggle="collapse" class="collapsed"><i class="lnr lnr-menu"></i> <span>Gerenciamento</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+                        <div id="subUsuarios" class="collapse ">
+                            <ul class="nav">
+                                <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/private/admin/users}" class="">Usuarios</a></li>
+                                <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/private/admin/user_roles}" class="">Permissões</a></li>
+                            </ul>
+                        </div>
+                    </li>
+
+
+                    <li><a th:href="@{/logout.html}"><i class="lnr lnr-exit"></i> <span>Sair</span></a></li>
+
+                    <!--
+                    <li><a href="elements.html" class=""><i class="lnr lnr-code"></i> <span>Elements</span></a></li>
+                    <li><a href="charts.html" class=""><i class="lnr lnr-chart-bars"></i> <span>Charts</span></a></li>
+                    <li><a href="panels.html" class=""><i class="lnr lnr-cog"></i> <span>Panels</span></a></li>
+                    <li><a href="notifications.html" class=""><i class="lnr lnr-alarm"></i> <span>Notifications</span></a></li>
+                    <li>
+                        <a href="#subPages" data-toggle="collapse" class="collapsed"><i class="lnr lnr-file-empty"></i> <span>Pages</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+                        <div id="subPages" class="collapse ">
+                            <ul class="nav">
+                                <li><a href="page-profile.html" class="">Profile</a></li>
+                                <li><a href="page-login.html" class="">Login</a></li>
+                                <li><a href="page-lockscreen.html" class="">Lockscreen</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li><a href="tables.html" class=""><i class="lnr lnr-dice"></i> <span>Tables</span></a></li>
+                    <li><a href="typography.html" class=""><i class="lnr lnr-text-format"></i> <span>Typography</span></a></li>
+                    <li><a href="icons.html" class=""><i class="lnr lnr-linearicons"></i> <span>Icons</span></a></li>
+                    -->
+
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <!-- END LEFT SIDEBAR -->
+
+</div>
+</body>
+</html>
